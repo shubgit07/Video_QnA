@@ -1,0 +1,30 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: #0b0d10;
+  color: #e8edf3;
+}
+.page { max-width: 760px; margin: 0 auto; padding: 32px 20px; }
+header h1 { margin: 0 0 4px; }
+header p { margin: 0 0 20px; color: #9aa4b2; }
+.ask-row { display: flex; gap: 8px; }
+.ask-row input {
+  flex: 1; padding: 10px 12px; border-radius: 8px;
+  border: 1px solid #333b47; background: #161a20; color: inherit;
+}
+.ask-row button {
+  padding: 10px 16px; border-radius: 8px; border: none;
+  background: #ff6b35; color: #fff; cursor: pointer; font-weight: 600;
+}
+.ask-row button:disabled { opacity: 0.6; cursor: default; }
+.card {
+  margin-top: 16px; padding: 16px; border-radius: 12px;
+  background: #161a20; border: 1px solid #262c36;
+}
+.card h2 { margin: 0 0 8px; font-size: 16px; }
+.card ul { margin: 0; padding-left: 20px; }
+.card li { margin-bottom: 10px; }
+.card a { color: #ff8c5a; }
+.preview { margin: 4px 0 0; color: #9aa4b2; font-size: 14px; }
+.error { color: #ff7b72; }

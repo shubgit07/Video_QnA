@@ -9,15 +9,15 @@ WORKDIR /app
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-COPY pyproject.toml uv.lock .python-version ./
+COPY backend/pyproject.toml backend/uv.lock backend/.python-version ./
 RUN uv sync --frozen --no-install-project
 
-COPY ytrag ./ytrag
-COPY api ./api
-COPY main.py ./
-COPY transcripts ./transcripts
-COPY index ./index
-COPY eval ./eval
+COPY backend/ytrag ./ytrag
+COPY backend/api ./api
+COPY backend/main.py ./
+COPY backend/transcripts ./transcripts
+COPY backend/index ./index
+COPY backend/eval ./eval
 COPY SETUP.md ./
 RUN uv sync --frozen
 

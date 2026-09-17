@@ -1,4 +1,7 @@
-# Keep image small + secret-free. Note: transcripts/ + index/ MUST ship (prebuilt DB).
+# Keep image small + secret-free. Note: backend/transcripts/ + backend/index/ MUST ship (prebuilt DB).
+frontend/
+node_modules/
+dist/
 .venv/
 .git/
 __pycache__/

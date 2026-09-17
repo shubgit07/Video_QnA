@@ -26,3 +26,8 @@ audio/
 *.m4a
 *.wav
 *.tmp
+
+# Frontend
+node_modules/
+dist/
+frontend/dist/
