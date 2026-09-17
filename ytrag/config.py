@@ -177,7 +177,7 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "") or os.getenv("GOOGLE_API_KEY", "")
 LLM_MODEL = os.getenv("YTRAG_LLM_MODEL", "")  # blank = per-backend default
 GROQ_MODEL = os.getenv("YTRAG_GROQ_MODEL", "openai/gpt-oss-120b")
-GEMINI_MODEL = os.getenv("YTRAG_GEMINI_MODEL", "gemini-2.0-flash")
+GEMINI_MODEL = os.getenv("YTRAG_GEMINI_MODEL", "gemini-3.5-flash-lite")
 
 # The exact string the system says when retrieval comes back empty. Kept here
 # because evaluate.py and the frontend both need to recognise it.
