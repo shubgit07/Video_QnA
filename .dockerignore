@@ -1,0 +1,13 @@
+# Keep image small + secret-free. Note: transcripts/ + index/ MUST ship (prebuilt DB).
+.venv/
+.git/
+__pycache__/
+*.pyc
+.env
+.agents/
+.ytrag/
+audio/
+*.m4a
+*.wav
+*.tmp
+.DS_Store

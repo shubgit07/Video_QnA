@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Env / secrets — keep .env.example, never commit .env
+.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Project: ignore all README docs, keep SETUP.md tracked
+README.md
+**/README.md
+RAGPLAN.md
+
+# Runtime data (outside repo by default, ignore if ever local)
+.ytrag/
+qdrant/
+audio/
+*.m4a
+*.wav
+*.tmp
