@@ -2,7 +2,6 @@
 name = "ytscraper"
 version = "0.1.0"
 description = "Timestamp-level RAG over a YouTube DSA lecture playlist"
-readme = "README.md"
 requires-python = ">=3.11,<3.13"
 dependencies = [
     "yt-dlp>=2026.1.26",
