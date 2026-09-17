@@ -23,10 +23,11 @@ os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
 # walking up from this file so `ytrag` works from any directory.
 load_dotenv(find_dotenv(usecwd=True))
 
-_REPO_ROOT = Path(__file__).resolve().parents[3]
-_ROOT_ENV = _REPO_ROOT / ".env"
-if _ROOT_ENV.exists():
-    load_dotenv(_ROOT_ENV, override=False)
+_parents = Path(__file__).resolve().parents
+if len(_parents) > 3:
+    _ROOT_ENV = _parents[3] / ".env"
+    if _ROOT_ENV.exists():
+        load_dotenv(_ROOT_ENV, override=False)
 
 
 # ------------------------------------------------------------------
