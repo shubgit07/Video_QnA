@@ -20,6 +20,13 @@ header p { margin: 0 0 20px; color: #9aa4b2; }
   background: var(--green); color: #fff; cursor: pointer; font-weight: 600;
 }
 .ask-row button:hover:not(:disabled) { background: var(--green-hi); }
+.picker-row { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+.picker-row label { font-size: 13px; color: #9aa4b2; }
+.picker-row select {
+  padding: 8px 10px; border-radius: 8px; max-width: 100%;
+  border: 1px solid #333b47; background: #161a20; color: inherit; font: inherit;
+  font-size: 13px;
+}
 .ask-row button:disabled { opacity: 0.6; cursor: default; }
 .card {
   margin-top: 16px; padding: 16px; border-radius: 12px;

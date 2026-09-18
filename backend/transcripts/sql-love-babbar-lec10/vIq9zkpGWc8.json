@@ -1,0 +1,754 @@
+{
+ "video_id": "vIq9zkpGWc8",
+ "title": "Lecture 10: Common SQL Queries for Interviews (love babbar)",
+ "language": "en",
+ "model": "large-v3",
+ "duration": 4666,
+ "segments": [
+  {
+   "start": 2.9,
+   "end": 32.1,
+   "text": "Hello, how are you all? This is Lakshesh and we have come to our DBMS lecture number 10 and today we are going to discuss, what to discuss? We are going to solve, we are going to practice SQL questions. In the last video, in lecture number 9, we read all the concepts of SQL. Now it is time to apply them. We will take a database, we will make it. Someone commented in the video in lecture 9 that you did not teach how to make a database, although I taught it, if you look carefully, you will know. But still,"
+  },
+  {
+   "start": 32.1,
+   "end": 62.64,
+   "text": "again make a database make tables establish relations and then do some questions on it write some queries try to fetch some particular data by using all the concepts which we had studied in lecture number 9 so let's understand what we will do make a DB make tables make relations then make relationships of data how to make relationships? constraints of column then on that"
+  },
+  {
+   "start": 62.64,
+   "end": 93.97,
+   "text": "we will solve the question and a bonus question which is not related to this DB we will discuss in the last 51th question is very important it will give you a very different perspective so now be ready for the last 51th question so now let's come to the laptop screen and now we will make a DB the name of the DB is org organization we made this in the last video also although some queries were written on it but now we will write all the queries on it and understand things"
+  },
+  {
+   "start": 93.97,
+   "end": 122.54,
+   "text": "with the command of create db, we create the database, I will see after deloading, I will see after refreshing, then I will get the name of the org, then I will see the tables, then I have to switch to the database, we don't have to say this, I will switch from use org to the database, very good, now what will we do, first of all, let's make a relation, that is a worker, this is my main table, it has a worker id and some other attributes,"
+  },
+  {
+   "start": 122.64,
+   "end": 149.2,
+   "text": "Let's add some data from the insert command. You can see the command, you must be able to understand it. Let's see whether the data has been entered or not. I have got the data. I have added 8 workers. Now there is another table, the bonus table, which tells how much bonus amount has been given to a particular worker ID and when. Now I said the corresponding to a particular worker ID, so the worker reference ID in it is one."
+  },
+  {
+   "start": 149.2,
+   "end": 175.81,
+   "text": "It will be in the foreign key constraint and look carefully, this is an on-delete cascade. You have to note this. Very good, I added. So basically this is a foreign key here, which is the primary key in worker table. Let's add some data to the bonus. Let's make a bonus first. We have not made a bonus yet. We have made a bonus table. Yes, let's add data to it. There is a title table."
+  },
+  {
+   "start": 175.81,
+   "end": 208.69,
+   "text": "Title table tells the corresponding title of a particular worker ID and since when it was made. Here is the form constraint, worker ref ID, title table is made. I add some tuples here. Now if I refresh it, I have three tables. And if I want to see the data of the three tables, then I will also have the data of the bonus table here. Yes. And I will also have the data of the title table."
+  },
+  {
+   "start": 210.16,
+   "end": 241.49,
+   "text": "This is my organization's DB which has worker table, bonus table and title table. These are the values in it. Now we will run some queries and solve some questions based on this DB. This is a sheet with 50 questions. We will solve all the questions line by line. We will go from very easy questions to advanced concepts. We will cover all the concepts in it."
+  },
+  {
+   "start": 241.49,
+   "end": 273.1,
+   "text": "So, first of all, let's see an easy question in which it is said to write an SQL query to fetch first name from the worker table using alias as worker name. So, basically, this knowledge is being tested here that you don't know about as keyword or about aliasing. So, what will you do? Select first name as. You can write capital or small. Spelling is getting wrong. Let's take it from here. Worker name from worker."
+  },
+  {
+   "start": 273.39,
+   "end": 304.11,
+   "text": "I have got all the first names in which the name of the table is given as worker name Next question is write an SQL query to fetch first name from worker table in uppercase Uppercase is a keyword that is used after select I will not cover the names written in DB in uppercase"
+  },
+  {
+   "start": 304.11,
+   "end": 336.72,
+   "text": "I will not convert them in upper case I will remove the strings from the table and after removing I will do post processing I will do some cosmetic changes using select and I will give you the output Let's understand how I will do select first name from worker If I do this much then I see the data which was in db Now what I have to do is put a keyword here upper So all this will be converted in upper case"
+  },
+  {
+   "start": 337.71,
+   "end": 367.25,
+   "text": "Everything has been converted to uppercase. Let's move ahead. Write an SQL query to fetch unique values of department from the worker table. We know that inside the worker table, if I print the worker table, then there is something like a department. I have a department. So here there are many departments. There are three departments. So I need unique values. Which type of three departments are there? Which three are there? I need distinct values. So what will I have to do? Select."
+  },
+  {
+   "start": 367.44,
+   "end": 393.78,
+   "text": "It is a distinct keyword. We have read it. Department from worker. I will print this. Will it give the correct answer? Yes. HR, admin, account. Three departments have come. All three are my distinct values. Okay. Remember, we could have used the keyword group by. Group by. Okay. Remember. Your homework is"
+  },
+  {
+   "start": 393.78,
+   "end": 422.75,
+   "text": "Write the same query in the comment section and tell us how to use groupby in the same query I told you that if we are using groupby and not applying the aggregation function then it behaves like a distinct So write the same query in the comment section and tell us how to use groupby in the same query Let's move ahead Write an SQL query to print the first three characters of the first name from the worker table I want to do something like a substring"
+  },
+  {
+   "start": 422.75,
+   "end": 456.18,
+   "text": "we need only three first characters for every name, we need three first characters so if I select first name from worker then we will get all first names I have to do post-processing, pay attention to post-processing for this, what is your keyword, it is sub-string, it has also suggested me in sub-string, first of all, I will get a string because I want a first name like this now I will give where to start and length, how much length to go"
+  },
+  {
+   "start": 456.18,
+   "end": 481.55,
+   "text": "you have to start from the first character and I need three characters so if I do this, then I will get the first three characters of every name ok, very good if you want to know what a substring does, then I told you in the last lecture, there is a website called w3school, there is a very good reference of SQL, if I search for substring, then you will see about substring here and you can read about it, I have to give start and length, right?"
+  },
+  {
+   "start": 482.35,
+   "end": 514.61,
+   "text": "Let's move on to the 5th question Write an SQL query to find the position of the alphabet B in the first name column Amitabh from Burger table I have to find the entry of Amitabh from the first name column So I will use the SELECT star from Burger where clause I will use the conditioning WHERE first name equal to Amitabh"
+  },
+  {
+   "start": 515.86,
+   "end": 549.39,
+   "text": "So, I got all the data in Amitabh's corresponding. What do I want? I only want the first name. I also want the position. I want the position. To find the position, I have a keyword, instr. If we read about instr, what does it say? It says, position of the first occurrence of the string in another string. It tells the position. What do I have to do here? I have to use instr."
+  },
+  {
+   "start": 549.39,
+   "end": 579.18,
+   "text": "and I have to tell that in which string I have to search I have to search in first name and what I have to search I have to search b very good answer is 6 so if you see in the book then 1,2,3,4,5,6 b is in 6th position this is one index and zero index is not at all like cc++ or like programming languages so by using this integer we got this out see carefully this b I have given capital then also it is searching small means this"
+  },
+  {
+   "start": 579.63,
+   "end": 614.22,
+   "text": "this function search case insensitive very good, next write an SQL query to print the first name from the worker table after removing white spaces from the right side to do this SQL gives you a keyword in select which is named rtrim how to write? I have to do select first name from worker what will it do? it will bring all first names"
+  },
+  {
+   "start": 614.61,
+   "end": 644.14,
+   "text": "I have to remove all the trailing spaces from the right side of the R-trim. If I use R-trim, then all the trailing spaces will be removed. The problem is that there is no such entry in our DB. We have put a perfect entry, we have not done any problem. But there are some DBs where there are some extra spaces, so I can remove the output by trimming like this. So if you want to remove space from the right side, then you can use R-trim like this. If you want to remove space from the left side, the next option is to remove it from the left side, then I have to use L-trim."
+  },
+  {
+   "start": 644.14,
+   "end": 674.9,
+   "text": "Very good, we have understood both the methods of trimming. On the 8th question, write an SQL query that fetches the unique value of department from worker table and print its length. String's length. Meaning, I want a unique department. Let's use distinct again. Department from worker. It will give me a distinct department from worker table. Along with that, I want length."
+  },
+  {
+   "start": 675.73,
+   "end": 708.94,
+   "text": "I need the length of the department using this length keyword, I can get the length there are 2 characters in hr, so 2 and 5 in admin and 7 in account let's move ahead I am solving the question here I hope you are doing this, as you are reading the question, you are pausing the video and after pausing the video you must have taken a screenshot of the iPad, you must have seen the DB completely after pausing the video, you must be writing the queries yourself and after that you must be looking at my answers"
+  },
+  {
+   "start": 708.94,
+   "end": 739.28,
+   "text": "I am trusting you. Let's move ahead. If you are not doing this, then start doing this from now. Now the queries were easy and now they will be hard. Very good. Write an SQL query to print the first name from the worker table after replacing A with A. That is, I have to get the first name. After that, I have to convert the small a to the capsa. Select first name from worker. It will give me the first name. Very good."
+  },
+  {
+   "start": 739.28,
+   "end": 768.91,
+   "text": "Now there is a keyword called REPLACE What is REPLACE? First of all, I take a string and I have to replace it in which sub-string and in which I have to replace it I will write that, then I will get the output wherever A is written, it has been converted to capital A If you want to read about REPLACE, then you know, you are smart, you have to go to the website of W3School and you can understand by going there Very good, let's move forward"
+  },
+  {
+   "start": 768.91,
+   "end": 797.02,
+   "text": "write an SQL query to print the first name and the last name from the worker table into a single column complete name means as you know in DB there is a first name column and a last name column in the worker table I need both the complete names in DB there are two different columns what you need is to concatenate both of them with the help of select if you want to concatenate then my keyword is concat I can put any number of expressions in concat"
+  },
+  {
+   "start": 797.02,
+   "end": 834.14,
+   "text": "So what is the first expression I have put? First name I don't know why the value is coming. After that, I have to give some space. Let's put space too. The second string is space. The third string is last name from worker. Now you have a complete name. Let's alias it once. As complete name. Very good. If you don't alias, as you have seen, if you don't alias,"
+  },
+  {
+   "start": 834.14,
+   "end": 864.56,
+   "text": "So whatever you are writing in between the select, that is the name of the column. You must be noticing this. But it is a good practice that you do aliasing. Let's move ahead. Write an SQL query to print all worker details from worker table. Order by first name ascending. I want to print all the details and I want to use order by. We have read about order by. It is very easy. You can write all. Start, I want all the details from worker. Okay. Order by."
+  },
+  {
+   "start": 864.56,
+   "end": 899.82,
+   "text": "I have to use first name very good ascending is by default so I don't need to write ASC so I am not writing so see it has gone to ascending by itself how is ascending? corresponding to your first name let's turn on the light yes it is fine very good let's move ahead write an SQL query to print all worker details from worker table order by first name ascending and department descending ok"
+  },
+  {
+   "start": 899.82,
+   "end": 932.53,
+   "text": "multiple order which basis to order can give multiple statements so what I have to do I have to select star from worker have to print all the details have to buy order from which? from first name which will be ascending so I don't need to give and department which is descending have to give DESC so this is your something done like this you solve this thing"
+  },
+  {
+   "start": 932.53,
+   "end": 963.68,
+   "text": "Let's move on to the 13th query Write an SQL query to print details for workers with first name as Vipul and Satish from worker table I want to print details of such workers whose first name is either Satish or Vipul Select star from worker"
+  },
+  {
+   "start": 963.68,
+   "end": 998.54,
+   "text": "after that I will use where and first name in I will give the list because I have multiple so I don't want to use more so I will give the list we have read this Satish very good ok so we have two such entries whose worker id is 6 and 7 so we have printed about it very good let's move ahead next query is similar to this maybe write an SQL query to print details of worker excluding"
+  },
+  {
+   "start": 999.22,
+   "end": 1028.59,
+   "text": "First name is Vipul and Satish. Other than Vipul and Satish, all the first names will be printed. So what I have to do is copy the same query, paste it here, and use a keyword which is not. I will use not in. Other than Vipul and Satish, all the workers will be printed. Let's move ahead. Write an SQL query to print details of workers with department name as admin."
+  },
+  {
+   "start": 1028.59,
+   "end": 1062.22,
+   "text": "we have to print the details of the workers whose department name is admin or any other characters after admin ok so how will we write this we have read wild card in SQL about wild card concept select star from worker where department is is not coming like admin should I put star no"
+  },
+  {
+   "start": 1062.32,
+   "end": 1086.72,
+   "text": "Percentage sign is very good If you print it, you will see that all the admin departments are printed But apart from the admin, there is also a department whose starting five characters are admin In front of it, there is administrator, administration, admin xyz is the name of the department, then all are printed So we have the admin in db, so I have the corresponding data of the admin"
+  },
+  {
+   "start": 1086.72,
+   "end": 1117.66,
+   "text": "Let's move ahead, I hope you understood the concept. Write a SQL query to print details of worker whose first name contains A. Means, A should be in the first name. I can use wildcard here as well. I think, select star from worker where first name like %a% Okay. I can write something like this."
+  },
+  {
+   "start": 1117.66,
+   "end": 1147.62,
+   "text": "So here all the first name containing workers have been printed in case A comes in it. Wherever A comes, if A is in last in monica, then it is also printed. This percentage sign is replaced by null, that is, there should be no character, zero characters or n characters. This is basically used as an asterisk in regular expressions. Let's move ahead. Write an asterisk query to print details of worker whose first name ends with A. That is, I want A in last."
+  },
+  {
+   "start": 1147.62,
+   "end": 1176.64,
+   "text": "If you want it in the last, then your statement will be similar. Let's copy and paste it. I have to keep A in the last, so I will remove the percentage sign from the last and this will be my query. So in the last name, which has A character, all the worker IDs have been printed. These are very easy queries. Let's move ahead. Write an SQL query to print details of the worker whose first name ends with H and contains six alphabets."
+  },
+  {
+   "start": 1176.64,
+   "end": 1201.65,
+   "text": "means first name ends with H and total number of elsewhere bed is 6 in their first name so let's see this too here also I have to use wildcard select star from worker where first name like underscore"
+  },
+  {
+   "start": 1201.65,
+   "end": 1232.13,
+   "text": "percentage can't be used because percentage can be replaced with any number of characters and underscore can be replaced with any number of characters so 1,2,3,4,5 I have put 5 underscores and at the end H so total number of characters will be 6 so in starting 5 characters can be any number of characters and at the end I wanted H so I printed this Satish is the only one in DB let's move on write an SQL query to print"
+  },
+  {
+   "start": 1232.13,
+   "end": 1266.11,
+   "text": "DTSO worker whose salary lies between 1 lakh and 5 lakhs. So I have to use the condition here. And I have to use between because I want it between two extremes. Low and high. Where salary between 1 lakh and 5 lakhs. I use and. So all those employees."
+  },
+  {
+   "start": 1266.11,
+   "end": 1296.24,
+   "text": "or the worker has been printed whose salary is between 1 Lakh and 5 Lakhs not in between and 1 Lakh and 5 Lakhs is also inclusive as we all know ok, let's move ahead write a SQL query to print details of the worker who have joined in Feb 2014 we need such workers who have joined in Feb 2014 ok so what I have to do select star from worker where I have the keyword year timestamp"
+  },
+  {
+   "start": 1296.24,
+   "end": 1328.54,
+   "text": "or take out from date, which is year attribute is joining date, I will take out year from it what should be in year, year should be 2014 and month is my keyword, let's write it in capital so that the readability increases month should be mine, I have to take out the month of joining date what is joining date, here is the attribute what is month, what is mine, 02 ok, let's run it and see"
+  },
+  {
+   "start": 1328.54,
+   "end": 1361.26,
+   "text": "So I have found that I have three workers who joined in February 2014. Let's move ahead. Next question is write an SQL query to fetch the count of employees working in the department admin. That is, tell me the count of employees working in the admin department. You all know what I have to use here. I have to use aggregation. So what will I do? Select star. Not select star. I want department."
+  },
+  {
+   "start": 1361.39,
+   "end": 1396.02,
+   "text": "and its count from worker where department equal to admin I will run this and I will get 4 workers working in admin ok, now see carefully I have not used groupby because I wanted to talk about one department there was no need of grouping, I can do county only let's move ahead write an SQL query to fetch worker"
+  },
+  {
+   "start": 1396.18,
+   "end": 1438.96,
+   "text": "I need full name of worker with salary greater than or equal to 50,000 and less than or equal to 1 lakh I need full name of worker with salary greater than or equal to 50,000 and less than or equal to 1 lakh I need full name of worker with salary greater than or equal to 1 lakh I need full name of worker with salary greater than or equal to 50,000 and less than or equal to 1 lakh"
+  },
+  {
+   "start": 1441.68,
+   "end": 1473.79,
+   "text": "So we have 4 employees like this Monica Arora, Niharika Verma Let's see the salary of Monica Arora, it is 1 lakh, so it should come Let's see the salary of Satish Kumar, it is 75000 which is 50 and it comes behind 1 lakh This is my query, let's move forward Write an SQL query to fetch the number of workers for each department in descending order I want workers in each department, how many workers are there and I want in descending order So what will I do, I know that I will have to group first"
+  },
+  {
+   "start": 1473.79,
+   "end": 1512.27,
+   "text": "select department comma count worker id from worker I will use group by I have to do department I will do group by from department then I have to do order also I have to do sort also how I have to do sort? I have to do sort in descending order so to sort in descending order I have to put this again here"
+  },
+  {
+   "start": 1512.27,
+   "end": 1544.18,
+   "text": "I have to sort it with the count. If I will run it, then what command output comes. Very good. So basically our department has come. Their corresponding count has come. But this count is in ascending order. Because we have not used descending keyword. So I have to write DESC here. Okay. Something like this output comes. So output has come in descending order. But it needs some beautification. Because here I can put number of worker by using as keyword. Okay. Like this."
+  },
+  {
+   "start": 1544.18,
+   "end": 1574.26,
+   "text": "I don't like the name of the column by counting. So I better alias it and use this aliasing. This query will look good and the output will also look good. You have to do aliasing in this case. I don't want the name of the column to look like an aggregation function. Let's move ahead. Write an SQL query to print details of employees who are also managers."
+  },
+  {
+   "start": 1574.26,
+   "end": 1603.73,
+   "text": "I need the details of such employees, such workers who are also managers. So I need the details of the worker and the manager should also be known. So you will see something like this that maybe it will have to use join in it. Why? Because the worker table is different. And what is their title, that table is different. So I need to get the worker ID of such workers who are managers here. So what can I do to do this? I have"
+  },
+  {
+   "start": 1604.37,
+   "end": 1637.36,
+   "text": "same column, this is my foreign key this is my primary attribute so I can apply inner join on this and I can print a new table and then I can print the manager so what I will do, first let's see inner join select star from worker as w we will put inner join on this title as t ok on w dot"
+  },
+  {
+   "start": 1637.62,
+   "end": 1670.7,
+   "text": "worker id equal to t dot t dot worker ref id ok t dot worker left id t ok this dot is doing problem now this query is correct now look carefully I have done join operation we know that join is column wise column increases horizontal combination is also called we have increased size horizontally"
+  },
+  {
+   "start": 1670.7,
+   "end": 1699.86,
+   "text": "so now see both the tables are joined now what do I want? I want such workers which are also managers so I want to remove all managers from it what can I do? where I will apply where t.workerTitle equal to manager now let's see what output comes"
+  },
+  {
+   "start": 1699.86,
+   "end": 1729.01,
+   "text": "So, I have got everything that Monica Arora and Vivek Bhatti are two managers. Let's look at the iPad carefully. These were the two managers. 1 and 5. 1 is Monica and 5 is Vivek. So, I have got the output. But the problem is that I don't want everything. What I want is the print details of the workers. I want all the details. Now look at the joint table. This is the joint table from the inner joint. I have got all the information."
+  },
+  {
+   "start": 1729.07,
+   "end": 1756.24,
+   "text": "I can use W dot star to get as much information as the worker table. So this is the information I got. These are both the managers. The manager is an HR department manager and an admin department manager. I have some queries. Let's move ahead. Now let's come to the 25th question. I have changed the language a bit. Write an SQL query to fetch number of same titles."
+  },
+  {
+   "start": 1756.24,
+   "end": 1786.19,
+   "text": "in organization of different type means what I have to do, let's come to the title table once on iPad, in the title table that how many numbers are there in the manager title, how many people are there in the manager title, how many people are there in the executive title, how many people are there in the assistant manager title, how many people are there in the lead title, but I have to apply filtering in it, they will add filtering in the end, so what I have to do is select worker title ok"
+  },
+  {
+   "start": 1786.35,
+   "end": 1818.48,
+   "text": "I need count so I will add aggregation in it I have to use title table because I have all the information in title table title group by worker title ok worker title now if I will run it then I can see that manager title has two employees two workers, executor title has three existence manager has only one, lead worker title has two workers but what I want"
+  },
+  {
+   "start": 1819.09,
+   "end": 1852.24,
+   "text": "more than one so for more than one if I want to do filtering on group by and condition on group by then I will use having having count star greater than one very good so the assistant manager I had only one assistant manager so it is removed but let's do some beautification let's do it as as number or I will do it as count instead of count star and here I can use it as count"
+  },
+  {
+   "start": 1852.24,
+   "end": 1884.3,
+   "text": "Let's run it. Very good. This is the beautification of my query. Let's move ahead. Write an SQL query to show only odd rows from the table. This is something interesting. I just want to show the odd rows of the table. I want to show first, third, fifth. I have to do something like this. What will I do to do this? I have a keyword called mod. I will use mod. What will I do? Select star from worker where mod."
+  },
+  {
+   "start": 1887.28,
+   "end": 1920.82,
+   "text": "workerId not equal to 0 I know workerId because I have auto incremented workerId so it starts from 1 1,2,3,4,5,6,2 so I will mod 1% with 2 so not equal to 0 will come so I will say it is odd so if I will run it so I have 1,3,5,7 all these"
+  },
+  {
+   "start": 1920.85,
+   "end": 1952.93,
+   "text": "if I want to do even then same equal will be applied I just need to change one condition that you all know that I have to put equal to instead of not equal one more thing I will tell you that this sign behaves like not equal to and there is one more sign that behaves like not equal to that is yours I will comment it this sign behaves like not equal to in mysql"
+  },
+  {
+   "start": 1952.93,
+   "end": 1981.49,
+   "text": "Let's move forward. Write an SQL query to clone a new table from another table. This is something interesting. I want to clone the schema. I want to make a clone table. Suppose I want to make a table like a worker. What will I do? Create table. Let's give it a name. Worker clone. Like. You can use the like keyword here. I understood one more use of like keyword. Like worker."
+  },
+  {
+   "start": 1981.49,
+   "end": 2009.1,
+   "text": "If I execute it carefully, then I will have one more table, clone table. If I look at it, there is no data in it, but all the attributes are the same. All the attributes are the same, that is, what I have done is that I have copied the schema. Worker table schema has been copied inside the worker clone. Now you will have a question, I also need data inside it. I need worker data inside the worker clone. So if I want, what will I do?"
+  },
+  {
+   "start": 2009.1,
+   "end": 2043.92,
+   "text": "I will use insert command in it insert into worker clone select star from worker from worker table pick up all tuples and put them in worker clone ok let's run it let's run it because we have already run it earlier very good if I see here select star from worker clone now see carefully"
+  },
+  {
+   "start": 2045.23,
+   "end": 2074.96,
+   "text": "All the data of the worker has been copied. I have made a clone. So you have to keep this query in mind. Now let's come to the next query. Question number 29. Write an SQL query to fetch intersecting records of two tables. Now suppose I have a worker and a worker clone. These two tables which I know are clones of each other. I have to find the intersection in them. So the intersection keyword is not supported in MySQL. So I have to find the intersection with the help of joins. The intersection syntax has been shown in the 9th video. Let's do it. Select."
+  },
+  {
+   "start": 2075.82,
+   "end": 2106.59,
+   "text": "star from worker I will apply inner join on worker clone ok using worker id ok here is no star because it is inner join so I will get a lot of data so instead of star I will take worker's data not worker I have to write worker dot star I need a column corresponding to worker"
+  },
+  {
+   "start": 2106.59,
+   "end": 2135.89,
+   "text": "So, very good. Intersection between worker and worker clone will get all the data because all the data is common between these two. Very good. I have put an intersection. Let's move ahead. Write an SQL query to show records from one table that another table don't have. You might be thinking to use minus set operation. We know the syntax. So, I have to do select star from worker. I have to apply left join. Left join. Worker."
+  },
+  {
+   "start": 2135.89,
+   "end": 2167.86,
+   "text": "let's put it on clone using worker id where worker right table remember right table's joining parameter has to be null worker id is null if you are confused then see 938 it tells you what set operation is doing what is it doing now table a from left table I will remove all data from right table"
+  },
+  {
+   "start": 2167.86,
+   "end": 2196.94,
+   "text": "both the tables are the same, worker, worker and clone what will be the answer? nothing now see, many columns have come, many columns have come because what am I doing? I am putting a join, but I want a corresponding column of the left table so I will apply it like this, so I can't see the double double column let's move ahead, write an SQL query to show the current date and time I know we have to do this work with the help of dual tables, so select"
+  },
+  {
+   "start": 2198.67,
+   "end": 2229.47,
+   "text": "current date ok current date will come what is the date today 37 let's move ahead select if you want time then I use select now ok because of dual table I can take out now time also server time ok let's move ahead 32nd question write an SQL query to show the top n say 5 top 5 records of the table order by descending salary ok in order of descending salary I need top 5 entries"
+  },
+  {
+   "start": 2229.47,
+   "end": 2260.72,
+   "text": "select star from from worker order by salary and we have to order in descending order so now see this whole table which is my worker table which has 8 workers they have been sorted in descending order according to salary but what do I want? I want top 5 I want top 5 and what will I do for top 5? for that there is a keyword called limit I will apply limit keyword"
+  },
+  {
+   "start": 2261.36,
+   "end": 2291.09,
+   "text": "I need 5, so I will write 5 here. So I will get 5 entries first. Okay? We have understood that I have got 5 entries first. So I have got 5 entries first. If it was 3 here, then I would have got 3 entries first. If it was 1 here, then I would have got 1 entry first. Okay? If it was 6, then I would have got 6 entries first. Okay? Let's move ahead. Write an SQL query to determine the nth, say, n equal to 5 highest salary from the table."
+  },
+  {
+   "start": 2291.31,
+   "end": 2321.17,
+   "text": "I want Nth highest salary I want 5th highest salary I have two ways to do this In the last video, I have discussed about this First is using Limit Keyword Second is Sub Queries I can write Sub Queries Correlated Sub Queries Let's use Limit Keyword If I write Limit Keyword like this I get 5 entries first What I want? I want 5th entry I want only one entry What can I do?"
+  },
+  {
+   "start": 2321.17,
+   "end": 2347.81,
+   "text": "here I will write first 4, so if you write 4, then first 4 entries will come, now I will forget this 4, now after putting a comma here, 4 will behave like starting, like offset, leave 4 and then give me the first entry, so now see I have the 5th entry, so I have the 5th highest salary, let's understand again, if I write 5 here, if I write only 5, then I get 5 highest salaries,"
+  },
+  {
+   "start": 2347.81,
+   "end": 2374.83,
+   "text": "so now see 1,2,3,4,5 in 5th monica is arroda whose other idea is 1 I just want 5th so what I will do I will write something like this I want n so I will write n-1,1 ok means 5-1 means 4,1 first I have to take 4 entries I have to start from 4th and now I only want 1 entry 4 is behaving like offset so now see what will be the output 1 monica"
+  },
+  {
+   "start": 2375.25,
+   "end": 2405.01,
+   "text": "So, we have understood two uses of Limit Keyword. If I want to list all the first five, then I will do it like this. If I want to list the fifth, then I will do it like this. If I want the sixth highest salary, then I will write five here and one will remain here. So, the sixth highest salary will come. So, I can use it like this. So, you can do this work very beautifully by using Limit Keyword. Limit only works as a type of conditioning. Let's move ahead. Write an SQL query to determine the fifth highest salary without using Limit Keyword."
+  },
+  {
+   "start": 2405.33,
+   "end": 2437.33,
+   "text": "5th highest salary we don't need to use limit keyword in last video we did something like this in correlated subquery if you have read then you will write it very nicely very nicely we write select salary from worker w1 name it where 4 equal to"
+  },
+  {
+   "start": 2438.35,
+   "end": 2477.84,
+   "text": "we are going to write the correlative sub-query in the last video we read it revise it if you have any confusion in it we will count distinct w2.salary from worker w2 where w2.salary is greater than equal to w1.salary"
+  },
+  {
+   "start": 2483.09,
+   "end": 2512.08,
+   "text": "So this is my correlated query I gave its explanation in the last video You go and see the explanation once If someone is having a problem If I run this, then I will get the same answer Monica Arora whose salary was 1 lakh If I start, then you will see that you will get the name Monica Arora Very good Because I wanted salary, I have written salary Let's move ahead So so far you have two ways"
+  },
+  {
+   "start": 2512.08,
+   "end": 2541.79,
+   "text": "If you want 5th highest salary, 4th highest salary, 7th highest salary, 8th highest salary, then you need 8th highest salary. So what I will do is, I can do it in two ways. First, I can use the limit keyword. Second, I can use the core related subquery. So if you are asked in the interview, then you write both. The interviewer will be happy. Right? Next, write an SQL query to fetch the list of employees with the same salary. I want such employees whose salaries are the same. Right? I want the list of such employees."
+  },
+  {
+   "start": 2541.79,
+   "end": 2577.26,
+   "text": "I will write it like this select star from worker w1 comma worker w2 where w dot salary equal to w2 dot salary sorry w1 dot salary like this I will write it like this let's see what is the output of this now see the output inside this"
+  },
+  {
+   "start": 2578.38,
+   "end": 2609.23,
+   "text": "So this table is like a join table. We have learned that without using join keyword we can also use join. So this table is repeated twice. But what I have to do is to compare Monica's salary with mine. So I will write w1.workerId should not be equal to w2.workerId"
+  },
+  {
+   "start": 2609.23,
+   "end": 2634.0,
+   "text": "now see how it will be filtered now I have seen that Vivek's and Amitabh's salary is the same now let's go and see these are the two whose salaries are the same everyone's salary is distinct but these two people are the same so this is the output I have got here we understood why we put this condition"
+  },
+  {
+   "start": 2634.13,
+   "end": 2666.18,
+   "text": "Very good. Let's filter it. I will call it w1.star. So, I will not get repeated information. Dot is left. So, I will not get repeated information. This is the answer. Let's move ahead. Write an SQL query to show the second highest salary from the table. We have to give the second highest salary. So, we have to give the second highest salary. But, I am saying here using subquery. We have to use subquery."
+  },
+  {
+   "start": 2666.18,
+   "end": 2700.14,
+   "text": "Subquery doesn't mean correlated subquery I just want to use subquery Don't want to use limit Don't want to use correlated subquery I just want to use subquery So what can I do to do this? Select I want second highest salary Select max salary from worker What will happen with this? Max salary will come Max salary will come with this But what I want? I want second highest What will I do to get second highest? Select"
+  },
+  {
+   "start": 2701.52,
+   "end": 2734.0,
+   "text": "max salary from worker I will write a sub query that the salary should not be in not in select max of salary from worker now see carefully we have written something like this so now see carefully how this sub query will be worked out first of all what output will it get let's see in the whiteboard whose salary is the most"
+  },
+  {
+   "start": 2734.0,
+   "end": 2759.07,
+   "text": "so the maximum salary is 5 lacs and then 3 lacs so the subquery will be 5 lacs let's come back to the laptop so it will be 5 lacs now the outer query will be take out the max salary from the worker but the salary that we are filtering in the table"
+  },
+  {
+   "start": 2759.07,
+   "end": 2789.01,
+   "text": "It should not be in this, i.e. it should not be 5 lakhs, i.e. I have given this max in all the salaries other than 5 lakhs. So you have found three ways to get the highest, this is another way to get the second highest. I can also do this work with the help of subquery. Now you think, can I get the third highest from this? Can I get the third highest or fourth highest using this method? Can I write something like this in subquery? Yes or no, write this in the comment section and tell me."
+  },
+  {
+   "start": 2789.01,
+   "end": 2820.62,
+   "text": "Write an SQL query to show one row twice in results of the table."
+  },
+  {
+   "start": 2821.01,
+   "end": 2849.63,
+   "text": "Now you can see that the left query is also outputting all the data of the worker table. The right query is also outputting all the data of the worker table. Now when I do the union of both, then after doing the union, the corresponding data of the worker ID 1 is there in the left table and the corresponding data of the worker ID 1 is there in the right table. So when both are unionized, then we know that there is a unique value, a distinct value output in the set operation. So you can see that the distinct value has been output. Your output is the same as the worker table."
+  },
+  {
+   "start": 2849.63,
+   "end": 2875.28,
+   "text": "But if I want to do the same row twice, then I will put all, unique all, then your distinct value property will be removed from the setOperation. So you see, double-double output will come. Monica Aurora once, Monica Aurora twice. Right? Right? But if I want Monica Aurora, Monica Aurora, then I want Niharika, Niharika, then what can I do? Can I do something like this? Order by worker ID."
+  },
+  {
+   "start": 2875.38,
+   "end": 2903.17,
+   "text": "I have to apply the order later, so first the union happened, after the union, the order buy happened, so the order buy worker id happened, you see carefully, monica roda, monica roda, niharika, niharika, vishal, vishal, by doing this, your sorting has been done and two rows, sorry, one row is coming twice, ok, we have to do something like this, let's move ahead, write an SQL query to list worker id who does not get bonus, ok, this is something interesting, so I have to find such worker ids who did not get bonus,"
+  },
+  {
+   "start": 2903.17,
+   "end": 2932.54,
+   "text": "Let's come to the iPad and see that this is my bonus table. Look carefully in the bonus table, not all the worker IDs are there. There are only a few people who have received a bonus, but only 5 out of 8 people have received a bonus. So what do I have to do? I can write a subquery from here. What I will do in the subquery is that I will use the bonus table. I will remove the worker ID and make a list. Then I will run the select statement on the worker table and then I will search whether they exist in it or not."
+  },
+  {
+   "start": 2932.54,
+   "end": 2966.29,
+   "text": "I can use something like this to remove it so I will select list the worker id so I need worker id from worker where worker id not in not in select worker ref id from bonus ok so what will this query output"
+  },
+  {
+   "start": 2966.77,
+   "end": 2996.26,
+   "text": "So these are the worker IDs that didn't get the bonus. Let's go back to the iPad. In the bonus table, you can see 1, 2, 3, 1, 2. That means 1, 2, 3. If you take out the distinct, 1, 2, 3. Only 3 people got the bonus. Apart from 1, 3, 4, 5, 6, 7, 8 didn't get the bonus. Let's go ahead. Write an SQL query to fetch the first 50% record from the table."
+  },
+  {
+   "start": 2996.26,
+   "end": 3031.76,
+   "text": "I want 50% record first 50% record first 50% tuples to do this we also know that our worker id goes from 1 to 8 but it was auto incremented means 1,2,3,4 its values are like this I can do something like this select star from worker where worker id is less than equal to let's write all select count"
+  },
+  {
+   "start": 3032.53,
+   "end": 3063.54,
+   "text": "worker ID by 2 from worker. Let's run this query. You can see that the first 4 worker IDs have come. Because the subquery must have counted them. 8 employees came. 8 by 2, 4 came. So, it printed worker ID less than 4. So, the first 50% record has come. I have removed it from the worker ID. Let's move ahead. Write an SQL query to Fash department that have less than 4 people in it."
+  },
+  {
+   "start": 3063.54,
+   "end": 3100.02,
+   "text": "I need such a department which has less than 4 people I will use group by select department comma I have to count department as the count I call it from worker I will do group by department so if I run this query then what is my output"
+  },
+  {
+   "start": 3100.02,
+   "end": 3136.02,
+   "text": "All the departments are here, but which department do I want? In which there are less than 4 people. Having depth count less than 4. Okay. In HR and Account, less than 4 people work in two departments. Let's move ahead. Write an SQL query to show all departments along with the number of people in there. I want to show all departments along with the number of people. So, select star. Sorry. Select department. Comma. You can use the above query, I think."
+  },
+  {
+   "start": 3136.02,
+   "end": 3163.12,
+   "text": "So, let's reduce the effort and copy and paste it. I have to remove having from here. So, this is my answer. So, I have listed all the departments along with their dep count. Let's move ahead. Write an SQL query to show the last record from the table. This is something interesting. I want the last record in the table. Which was the last record in the table?"
+  },
+  {
+   "start": 3163.12,
+   "end": 3198.06,
+   "text": "We know that our worker id is always plus plus from 1 to 10 So first of all I have to find the max worker id After finding the max worker id I will print the corresponding data So what I can do is select star from worker where worker id equal to select max worker id"
+  },
+  {
+   "start": 3199.15,
+   "end": 3228.66,
+   "text": "I will use this, so I will get 8th worker id corresponding which is Githika Chauhan. Very good, so I have taken out the last record in this way. Write an SQL query to fetch the first row of a table. I want the first row. If I want the first row, then I will do something like this. And if I do min instead of max, then I will get the min worker id. If I get the min worker id, then I will get the first worker. I have filtered out with this, which is Monica Arora."
+  },
+  {
+   "start": 3228.75,
+   "end": 3260.16,
+   "text": "Now let's go to question number 44. Write an SQL query to fetch the last 5 records from the table. I need the last 5 records from the worker table. So what can I do? I will do something like this. First I will do select star from worker. So if I see, all the workers will come to me. Now I will do order by. I know I want the last. I want the last worker id. I need 4, 5, 6, 7, 8."
+  },
+  {
+   "start": 3260.16,
+   "end": 3287.95,
+   "text": "I will order buy this first with worker ID and put limit in it. I only need 5, so I got 5. But I don't need the first 5, I need the last 5. So first I will order buy this. I will order buy and do descending order. I will put limit after descending order. So now look carefully."
+  },
+  {
+   "start": 3288.3,
+   "end": 3312.69,
+   "text": "Descending order is 102 and last order is 8,7,6,5,4 But now the order is reversed so I have to fix the order again To fix the order, I will treat it as a subquery and again I will do order by worker ID Something like this happened, now look carefully I have the last 5 records of Amitabh, Vivek, Vipul, Satish, Geetika"
+  },
+  {
+   "start": 3313.04,
+   "end": 3343.33,
+   "text": "Let's move on to question 45 Write an SQL query to print the name of the employee having highest salary in each department I need the details of such employees I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in each department I need the data of employees earning the highest salary in"
+  },
+  {
+   "start": 3343.33,
+   "end": 3379.17,
+   "text": "select max salary I call it max sell I call it max sell and I need department from worker I have to use group by department wise so I need something like this group by department is not sorry I forgot by group by department now see every department has higher salary so in HR department I have higher salary"
+  },
+  {
+   "start": 3379.17,
+   "end": 3412.82,
+   "text": "sorry 3 lakhs and in admin department it is 5 lakhs and in account department it is 2 lakhs so this is the table now what I will do now I will rename this table I will alias it with a temp table and I will put inner join on this table this is temp table I will select w dot"
+  },
+  {
+   "start": 3413.36,
+   "end": 3447.47,
+   "text": "department comma w dot first name print and salary print w dot salary from this is my table which name I have changed from temp to alias I will put inner join on this table temp table will be used as left table inner join I will put on worker table worker w on temp dot"
+  },
+  {
+   "start": 3447.47,
+   "end": 3483.73,
+   "text": "department equal to w.department and temp.maxCell equal to w.salary ok, let's run it see how beautifully we have used derived tables we have derived table in derived table"
+  },
+  {
+   "start": 3483.92,
+   "end": 3513.09,
+   "text": "in worker table whose output was department and department wise max salary I applied inner zone in that table what was the condition that the department of the derived table should be same as the department of worker table and the max salary written in temp should match with the salary of worker table so I joined it in this condition"
+  },
+  {
+   "start": 3513.09,
+   "end": 3541.49,
+   "text": "So, by using subquery or derived tables and joints, I got the highest salary per department. Let's move ahead. My next question is number 46. Write an SQL query to fetch 3 max salaries from table using correlated subquery. I have got the first 3 max salaries. I don't have to use the limit keyword. I have to use the correlated subquery. So, let's select."
+  },
+  {
+   "start": 3541.49,
+   "end": 3571.15,
+   "text": "You can see that we are using the correlative subquery again and again. This is very important. What do some students do? What do some people do? It is good to write the limit because there is not much effort in the limit. They are basically confused in the correlative subquery. So they don't use this. So the interviewer gets you to write the query in the correlative subquery on purpose. Okay. So let's write this. I want a distinct salary because one salary can be of two people. Salary from worker. I will add this."
+  },
+  {
+   "start": 3571.31,
+   "end": 3609.68,
+   "text": "I will write W or W1 where 3 greater than equal to select I will have to count distinct salary from worker I will give it W2 name where W1 dot salary is less than equal to W2 dot"
+  },
+  {
+   "start": 3610.64,
+   "end": 3645.74,
+   "text": "salary if I run this then I will get 3 salaries but if I want max then I have to order it so I will write sort order by w1 dot salary descending order so something like this will be the output ok what we are doing here I have an outer query outer table w1 so I am running the inner query corresponding to w1 I am running it again and again"
+  },
+  {
+   "start": 3645.74,
+   "end": 3669.98,
+   "text": "and after running w1.salary if less than equal to w2.salary then I am counting the tuples of those salaries and I have to do those outputs whose count is greater than or equal to 3"
+  },
+  {
+   "start": 3669.98,
+   "end": 3704.43,
+   "text": "I am not explaining the correlated subquery because in the last video lecture 9 we have seen it dry run so what is your homework if you find it confusing then you will dry run it dry run after revising the correlated subquery concept from lecture 9"
+  },
+  {
+   "start": 3704.46,
+   "end": 3739.41,
+   "text": "I have given you the work of revising. If I show you its limit query, then how will it be? Distinct salary from worker order by salary. If I write something like this, then it has been ordered like this. What do I have to do? I have to order it in descending order, then it will be ordered in descending order. I want the first three. So what will I do? Limit"
+  },
+  {
+   "start": 3740.02,
+   "end": 3770.8,
+   "text": "I will write 3 so first 3 will come to me So the output of this query is very small and the output of this query is same But correlated subquery is more important than interval perspective because it is very confusing Let's move ahead Write an SQL query to fetch 3 minimum salaries If I want 3 minimum salaries then what I have to do I will have the same query I will use this only but here this condition"
+  },
+  {
+   "start": 3770.8,
+   "end": 3802.38,
+   "text": "it will be greater than equal to so I will get three minimum salaries this is my three minimum salaries very good let's move ahead if I want nth maximum salary so I will put n here so basically this is a query to generalize it let's move ahead let's see on 49th query write an SQL query to FATS department along with the total salary paid for each of them"
+  },
+  {
+   "start": 3802.7,
+   "end": 3835.63,
+   "text": "and how much is the total salary we have to use group by select department comma sum I have to apply here I want the sum of salary I will write it I will give the name of it from worker table I have to do group by department per department I will get the total number of salary"
+  },
+  {
+   "start": 3835.63,
+   "end": 3873.84,
+   "text": "if i want to sort then i can put order by descending order order will be in descending order sorry not descending order i have to give depth cell and descending order we forgot depth cell ok so admin is getting the most salary we have seen this write an SQL query to fetch the names of employees or workers who earn the highest salary"
+  },
+  {
+   "start": 3873.84,
+   "end": 3907.82,
+   "text": "we need the name of highest salary let's write it like subquery we will get first name salary from worker where salary equal to select max salary from worker ok we forgot this if it is subquery then we have to write like this"
+  },
+  {
+   "start": 3909.71,
+   "end": 3939.58,
+   "text": "So we have seen that Amitabh and Vivek are earning the most salary. So these are my 50 questions that we have practiced. In this we have applied group buy, order buy, correlated subquery, bar buy, and limit. So now pay attention to the limit and correlated subquery. This is very important. Correlated subquery is very important because it creates confusion. So you have to revise it again. For this, you have also been given a homework that you have to dry run and see if the subquery works properly or not."
+  },
+  {
+   "start": 3939.58,
+   "end": 3970.96,
+   "text": "So, we have done 50 questions related to DB. I will attach them. If you revise them, you will be able to write the entire 50 questions. You will be able to write the entire 50 questions. You will be able to write the entire 50 questions. You will be able to write the entire 50 questions. You will be able to write the entire 50 questions. You will be able to write the entire 50 questions."
+  },
+  {
+   "start": 3973.07,
+   "end": 4002.03,
+   "text": "now we will discuss 51th question which is remove all the reverse number pairs from the given table as you can see in the table 1,2 is an entry so its corresponding reverse pair is also available 2,1 2,4 is an entry so its corresponding reverse pair 4,2 is also available so what I have to do? I have to remove one pair from the reverse pair like 1,2 is 2,1"
+  },
+  {
+   "start": 4002.03,
+   "end": 4031.73,
+   "text": "So, I remove 2,1. I only need 1,2 in output. Okay? 2,3 is in corresponding and 3,2 is also there. So, I don't need 3,2. I just need 2,3. So, I need its output in this way. Now, look carefully. There is no reverse pair here. There is no 2,1 in 1,2. There is no 4,2 in 2,4. There was no reverse pair in 3,2 in original table. There is no 6,5 in 5,6. There was no reverse pair in 7,8. So, I have to get such an output. Got it? Do you understand the question?"
+  },
+  {
+   "start": 4031.73,
+   "end": 4059.12,
+   "text": "Let me repeat it again. There is a table in which reverse pairs are available. What you have to do is, you have to do such an output that one pair of reverse pairs disappears. Suppose I want to play 2-1. If 1-2 is there, then 2-1 should be removed. If 2-3 is there, then 3-2 should be removed. There should be no reverse pair. I am saying duplicates in my question. There should be no such output."
+  },
+  {
+   "start": 4059.34,
+   "end": 4090.96,
+   "text": "So pause the video and think about how to do it. I don't want to alter the table. I don't want to do any deletion in the table. I just want to use the SELECT statement and other SQL operations to get such an output. Very good. Let me give you a hint. The first hint is that you can do it by using JOINS. The second hint is that you can do it by using CORRELATED SUBQUERIES. Pause the video and try it once."
+  },
+  {
+   "start": 4091.41,
+   "end": 4123.97,
+   "text": "Let's see the solution How can I do this? Here we have made a table with this command First of all, I take method 1 Which I can do with the help of joins How can I do it with joins? If I apply left join on it In some such condition which I am going to write now"
+  },
+  {
+   "start": 4123.97,
+   "end": 4155.89,
+   "text": "I have to apply left join on pairs. So I have to give it a name. I give it a name left table. I made pairs left table. I have to apply left join pairs. Left join pairs. I call it right table. On. What is the joining condition? Left table's a should be equal to right table's b."
+  },
+  {
+   "start": 4155.98,
+   "end": 4186.75,
+   "text": "and the left table's b should be equal to the right table's a now see carefully how the output comes now you must be able to understand how beautifully I have taken out the reverse pair by using left join do you understand how I have taken out the reverse pair now see 1,2 is available in 2,1 2,4 is available in 4,2 and those which are not available in reverse pair 3,2 is null what I have to do"
+  },
+  {
+   "start": 4186.75,
+   "end": 4219.65,
+   "text": "I want 1,2,2,4 values from this table I don't want 2,1 value I want to remove 2,1 from here I don't want this 2,1 Similarly, if I want 2,4 then I have to remove 4,2 Now I have to apply some conditioning using the where clause And what will be the condition? Look carefully Where The a of the right table is null And"
+  },
+  {
+   "start": 4219.65,
+   "end": 4249.39,
+   "text": "I have to remove 1,2 corresponding to 2,1 so I don't have to keep 2,1 I have to keep 1,2 so the second condition is that the left table's a should be less than the right table's a so you can see carefully what will happen by this? by this, if there is 1,2 then 1,2 will remain but 2,1 will be removed the left table's a this is the left table's a it should always be less than the right table's a so the right table's a"
+  },
+  {
+   "start": 4249.39,
+   "end": 4277.42,
+   "text": "So, the first row is fulfilling the condition. So, I will get a 1-2 answer. So, if I run this query. So, look carefully, the output is coming like this. So, how did I filter out? I removed 2-1 entry from the table. I removed 2-1 entry from the left table. I removed 4-2 entry from the left table. Now, what will I do? I just need the data of the left table. So, if you look carefully, we have removed all the reverse pairs."
+  },
+  {
+   "start": 4277.42,
+   "end": 4306.77,
+   "text": "1,2,2,4,3,2,5,6,7,8 So this is how beautifully I removed the reverse wear using the left zone and wear clause. Let's move on to the next method. Co-related subquery Let's use co-related subquery. How can we do it?"
+  },
+  {
+   "start": 4306.77,
+   "end": 4341.26,
+   "text": "we can write query like this select star from pairs how to write query to subquery first we have to make table p1 where now I will say not exist I will write query first then we will understand it select star from pairs I will call it p2 where p1.b equal to"
+  },
+  {
+   "start": 4341.81,
+   "end": 4380.34,
+   "text": "p2.a and p1.a equal to p2.b and p1.a should be greater than p2.a"
+  },
+  {
+   "start": 4381.62,
+   "end": 4412.4,
+   "text": "Let's try to turn it on and see if it is working or not. Very good, the same output is coming. Now this query is saying that the P1 of the outer query, what we are saying in the P1 of the outer query is that it is applying a wear condition that it should not follow this condition. What is that condition? The condition is that the P1 of the B, once we turn on the left one,"
+  },
+  {
+   "start": 4412.4,
+   "end": 4441.38,
+   "text": "let's print the table so guys let's understand the correlated subquery if I try to understand this query then I will do something like this first I will print the left table and the right table which is the left join operation P1 is the table and I am calling the left table as P1 I am calling the pairs as P1 and P2 so A and B are P1 the first one is A and B and the last one is P2 so how can a correlated subquery"
+  },
+  {
+   "start": 4441.38,
+   "end": 4470.19,
+   "text": "we know how correlated subquery works for a given p1 tuple the inner query works so the first tuple of p1 is 1,2 the corresponding of 1,2 runs the inner query so I know that p1.b means p1.b means 2 is equal to p2.a p2.a which is equal these two are equal and p1.a"
+  },
+  {
+   "start": 4470.19,
+   "end": 4500.59,
+   "text": "is equal to p2.b this is also equal to p1.a this condition is true for the first tuple of p1 and p1.a is greater than p2.a this condition is not true"
+  },
+  {
+   "start": 4500.85,
+   "end": 4530.02,
+   "text": "that whatever will be following this condition first, I will remove all those what will be the rows? this one will be this one will be this one see carefully in this also p1.b means p1 p1.b is equal to p2.a and p1.a is equal to p2.b this condition is being followed and the third condition is"
+  },
+  {
+   "start": 4530.02,
+   "end": 4562.82,
+   "text": "this is the condition that p1's a is greater than p2.a so p1's a is greater than p2.a so this tuple is following the inner query's where condition now because it is following it so I have taken all the pairs like this 2,1,1,2 let's see further 5,6,6,5 it is also following this condition not 5,6 sorry"
+  },
+  {
+   "start": 4562.82,
+   "end": 4594.98,
+   "text": "6, 5, 5, 6. It is following this condition. Which other conditions are following it? And it is following 4, 2. 2, 4 is also following it. Right? So, both of these three are following it. So, I said that those conditions, those all, which are following this condition, which are following this inner query, I have listed all of them. After listing, I have put not exist here. The one which is not existing inside it. Means, now P1."
+  },
+  {
+   "start": 4594.98,
+   "end": 4620.43,
+   "text": "I am printing all the tuples from P1 table which are not following this condition. So, this way I get the output and I get the same output which I was getting from this query. So, I have got the answer of this question using beautifully correlated subquery. Correlated subquery is little bit confusing. You must try it by dry run."
+  },
+  {
+   "start": 4620.43,
+   "end": 4649.23,
+   "text": "For correlated subquery, I am saying it again, your homework is dry run, dry run, and dry run. The more you do dry run, the better you will understand correlated subquery. So, this was your lecture number 10. Here we have practiced a little bit of SQL queries. After practicing, you must have got a little feel of SQL query. Your homework is also that"
+  },
+  {
+   "start": 4649.23,
+   "end": 4666.27,
+   "text": "Go ahead and search for more questions on the internet. Practice it yourself. And feel the SQL. It will be very handy for you. You won't have any problem in writing the queries. So, this was today's lecture. Let's end it here. And see you in the next lecture. Till then, goodbye. Thank you."
+  }
+ ]
+}

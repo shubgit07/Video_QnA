@@ -233,6 +233,7 @@ def search(
     top_k: int = TOP_K,
     video_id: str | None = None,
     max_distance: float | None = None,
+    playlist_id: str | None = None,
 ) -> list[tuple[Chunk, float]]:
     """Return [(chunk, distance)] sorted best-first, already distance-filtered.
 
@@ -243,11 +244,12 @@ def search(
     client = get_client()
     vector = get_embedder().embed_query(query)
 
-    query_filter = None
+    conditions = []
     if video_id:
-        query_filter = Filter(
-            must=[FieldCondition(key="video_id", match=MatchValue(value=video_id))]
-        )
+        conditions.append(FieldCondition(key="video_id", match=MatchValue(value=video_id)))
+    if playlist_id:
+        conditions.append(FieldCondition(key="playlist_id", match=MatchValue(value=playlist_id)))
+    query_filter = Filter(must=conditions) if conditions else None
 
     # Over-fetch, then re-rank. The vector search alone is a decent recall
     # filter but a poor judge of which result belongs first.
@@ -289,6 +291,7 @@ def stats() -> dict:
 
     info = client.get_collection(name)
     videos: dict[str, dict] = {}
+    playlists: dict[str, dict] = {}
 
     offset = None
     while True:
@@ -296,7 +299,7 @@ def stats() -> dict:
             collection_name=name,
             limit=512,
             offset=offset,
-            with_payload=["video_id", "video_title"],
+            with_payload=["video_id", "video_title", "playlist_id"],
             with_vectors=False,
         )
         for point in points:
@@ -304,8 +307,17 @@ def stats() -> dict:
             vid = payload.get("video_id", "?")
             entry = videos.setdefault(vid, {"title": payload.get("video_title", "?"), "chunks": 0})
             entry["chunks"] += 1
+            pid = str(payload.get("playlist_id") or "")
+            pentry = playlists.setdefault(pid, {"videos": 0, "chunks": 0, "_seen": set()})
+            pentry["chunks"] += 1
+            if vid not in pentry["_seen"]:
+                pentry["_seen"].add(vid)
+                pentry["videos"] += 1
         if offset is None:
             break
+
+    for pentry in playlists.values():
+        pentry.pop("_seen", None)
 
     return {
         "collection": name,
@@ -314,6 +326,7 @@ def stats() -> dict:
         "dim": get_embedder().dim,
         "embed_model": get_embedder().name,
         "videos": videos,
+        "playlists": playlists,
     }
 
 

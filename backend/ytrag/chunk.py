@@ -38,6 +38,7 @@ def chunk_segments(
     window_seconds: int = CHUNK_SECONDS,
     overlap_seconds: int = CHUNK_OVERLAP_SECONDS,
     min_words: int = MIN_CHUNK_WORDS,
+    playlist_id: str = "",
 ) -> list[Chunk]:
     """Greedy time-window merge with segment-aligned overlap."""
     segments = [s for s in segments if s.text.strip()]
@@ -68,6 +69,7 @@ def chunk_segments(
                     video_title=video.title,
                     start_sec=start_sec,
                     end_sec=end_sec,
+                    playlist_id=playlist_id,
                     # Prefixing the title is a cheap trick that meaningfully
                     # improves retrieval: a chunk from minute 34 usually never
                     # restates which topic it belongs to.

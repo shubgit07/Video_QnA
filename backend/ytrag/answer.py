@@ -137,13 +137,15 @@ def answer(
     top_k: int = TOP_K,
     video_id: str | None = None,
     max_distance: float | None = None,
+    playlist_id: str | None = None,
 ) -> dict:
     """-> {"answer", "citations", "grounded", "retrieved"}"""
     question = question.strip()
     if not question:
         return {"answer": REFUSAL, "citations": [], "grounded": False, "retrieved": 0}
 
-    hits = search(question, top_k=top_k, video_id=video_id, max_distance=max_distance)
+    hits = search(question, top_k=top_k, video_id=video_id, max_distance=max_distance,
+                  playlist_id=playlist_id)
 
     # Guard one: nothing survived the distance cutoff, so there is nothing to
     # ground an answer in. Return the refusal and never call the LLM.
@@ -197,7 +199,8 @@ def _is_confident(question: str, hits: list[tuple[Chunk, float]]) -> bool:
     return title_overlap(question, chunk.video_title) > 0 or distance <= CONFIDENT_DISTANCE
 
 
-def search_only(question: str, top_k: int = TOP_K, video_id: str | None = None) -> dict:
+def search_only(question: str, top_k: int = TOP_K, video_id: str | None = None,
+                playlist_id: str | None = None) -> dict:
     """Retrieval with no LLM at all — the timestamps, ranked.
 
     This is the main path. The timestamps *are* the product: a student wants
@@ -214,9 +217,10 @@ def search_only(question: str, top_k: int = TOP_K, video_id: str | None = None) 
     if not question:
         return {"results": [], "confident": False, "query": question}
 
-    hits = search(question, top_k=top_k, video_id=video_id)
+    hits = search(question, top_k=top_k, video_id=video_id, playlist_id=playlist_id)
     return {
         "query": question,
+        "playlist_id": playlist_id or "",
         "confident": _is_confident(question, hits),
         "results": [
             {
@@ -226,6 +230,7 @@ def search_only(question: str, top_k: int = TOP_K, video_id: str | None = None) 
                 "start_sec": chunk.link_sec,
                 "end_sec": chunk.end_sec,
                 "video_id": chunk.video_id,
+                "playlist_id": chunk.playlist_id,
                 "distance": round(distance, 4),
                 "preview": chunk.text.split(chr(10) + chr(10), 1)[-1][:240].strip(),
             }

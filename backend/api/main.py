@@ -59,6 +59,7 @@ app.add_middleware(
 class AskRequest(BaseModel):
     question: str = Field(..., min_length=1, max_length=config.MAX_QUESTION_CHARS)
     top_k: int = Field(default=config.TOP_K, ge=1, le=20)
+    playlist: str = Field(default="", help="Playlist folder id; empty = all playlists.")
 
 
 # A dict of deques is enough for one process on a free tier. Behind more than
@@ -102,14 +103,16 @@ def search(payload: AskRequest, request: Request):
     Rate limiting is deliberately not applied here — this costs nothing beyond
     one embedding and one vector query, so there is no reason to ration it.
     """
-    return search_only(payload.question, top_k=payload.top_k)
+    return search_only(payload.question, top_k=payload.top_k,
+                       playlist_id=payload.playlist or None)
 
 
 @app.post("/ask")
 def ask(payload: AskRequest, request: Request):
     _rate_limit(request)
     try:
-        return answer_question(payload.question, top_k=payload.top_k)
+        return answer_question(payload.question, top_k=payload.top_k,
+                               playlist_id=payload.playlist or None)
     except RateLimitError as exc:
         # The LLM provider's own quota, not ours. Surfacing this as a 500 tells
         # the student nothing; they need to know it is temporary and whose
@@ -136,7 +139,12 @@ def meta():
         data = load_transcript(vid)
         if data and data.get("segments"):
             seconds += data["segments"][-1]["end"]
-    return {"lectures": len(ids), "hours": round(seconds / 3600, 1)}
+    info = index_stats()
+    return {
+        "lectures": len(ids),
+        "hours": round(seconds / 3600, 1),
+        "playlists": info.get("playlists", {}),
+    }
 
 
 @app.get("/")

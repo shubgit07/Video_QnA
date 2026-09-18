@@ -119,9 +119,36 @@ def transcript_path(video_id: str, directory: Path | None = None) -> Path:
     return (directory or TRANSCRIPT_DIR) / f"{video_id}.json"
 
 
+def find_transcript(video_id: str, directory: Path | None = None) -> Path:
+    """Locate a transcript, including inside per-playlist subfolders."""
+    direct = transcript_path(video_id, directory)
+    if direct.exists():
+        return direct
+    matches = sorted((directory or TRANSCRIPT_DIR).rglob(f"{video_id}.json"))
+    return matches[0] if matches else direct
+
+
+def playlist_id_for(path: Path, directory: Path | None = None) -> str:
+    """The playlist id is the transcript's parent folder name.
+
+    Files directly under the transcripts root are unscoped ("").
+    """
+    base = (directory or TRANSCRIPT_DIR).resolve()
+    try:
+        rel = path.resolve().relative_to(base)
+    except ValueError:
+        return ""
+    return "" if len(rel.parts) < 2 else rel.parts[0]
+
+
+def transcript_files(directory: Path | None = None) -> list[Path]:
+    """Every transcript file, including per-playlist subfolders, sorted."""
+    return sorted((directory or TRANSCRIPT_DIR).rglob("*.json"))
+
+
 def load_transcript(video_id: str, directory: Path | None = None) -> dict | None:
     """Return the cached transcript dict, or None if absent/corrupt."""
-    path = transcript_path(video_id, directory)
+    path = find_transcript(video_id, directory)
     if not path.exists():
         return None
     try:
@@ -135,7 +162,7 @@ def load_transcript(video_id: str, directory: Path | None = None) -> dict | None
 
 
 def cached_video_ids(directory: Path | None = None) -> list[str]:
-    return sorted(p.stem for p in (directory or TRANSCRIPT_DIR).glob("*.json"))
+    return sorted(p.stem for p in transcript_files(directory))
 
 
 def segments_from_transcript(data: dict) -> list[Segment]:

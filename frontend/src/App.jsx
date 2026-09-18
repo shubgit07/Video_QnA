@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Backend base URL. On Vercel set VITE_BACKEND_URL to the Render service URL,
 // e.g. https://video-qna.onrender.com (no trailing slash).
 // Empty string = same origin (local dev against `ytrag serve` via proxy).
 const API = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/$/, "");
 
-async function post(path, question) {
+async function post(path, question, playlist) {
   const res = await fetch(`${API}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ question }),
+    body: JSON.stringify({ question, playlist: playlist || "" }),
   });
   if (!res.ok) {
     const text = await res.text();
@@ -24,7 +24,18 @@ export default function App() {
   const [answer, setAnswer] = useState(null);
   const [results, setResults] = useState([]);
   const [open, setOpen] = useState({});
+  const [playlists, setPlaylists] = useState({});
+  const [playlist, setPlaylist] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch(`${API}/meta`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((m) => {
+        if (m && m.playlists) setPlaylists(m.playlists);
+      })
+      .catch(() => {});
+  }, []);
 
   function toggle(key, e) {
     e.preventDefault();
@@ -41,11 +52,11 @@ export default function App() {
     setResults([]);
     try {
       if (mode === "ask") {
-        const data = await post("/ask", q);
+        const data = await post("/ask", q, playlist);
         setAnswer(data.answer);
         setResults(data.citations || []);
       } else {
-        const data = await post("/search", q);
+        const data = await post("/search", q, playlist);
         setResults(data.results || []);
       }
     } catch (e) {
@@ -76,6 +87,28 @@ export default function App() {
           Ask AI
         </button>
       </div>
+
+      {Object.keys(playlists).length > 0 && (
+        <div className="picker-row">
+          <label htmlFor="playlist">Playlist</label>
+          <select
+            id="playlist"
+            value={playlist}
+            onChange={(e) => {
+              setPlaylist(e.target.value);
+              setResults([]);
+              setAnswer(null);
+            }}
+          >
+            <option value="">All playlists</option>
+            {Object.entries(playlists).map(([id, p]) => (
+              <option key={id} value={id}>
+                {id} ({p.chunks} moments)
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {error && <p className="error">{error}</p>}
 

@@ -56,6 +56,7 @@ class Chunk:
     start_sec: int
     end_sec: int
     text: str
+    playlist_id: str = ""  # parent folder of the transcript; "" = unscoped
 
     @property
     def point_id(self) -> str:
@@ -83,6 +84,7 @@ class Chunk:
             "start_sec": self.start_sec,
             "end_sec": self.end_sec,
             "text": self.text,
+            "playlist_id": self.playlist_id,
         }
 
     @classmethod
@@ -94,4 +96,5 @@ class Chunk:
             start_sec=int(payload["start_sec"]),
             end_sec=int(payload["end_sec"]),
             text=payload["text"],
+            playlist_id=str(payload.get("playlist_id") or ""),
         )

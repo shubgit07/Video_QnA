@@ -151,7 +151,10 @@ def ingest(
                     else:
                         segments = transcribe(video, force=force, keep_audio=keep_audio)
 
-                    chunks = chunk_segments(video, segments)
+                    from ytrag.transcribe import find_transcript, playlist_id_for
+
+                    playlist_id = playlist_id_for(find_transcript(video.video_id))
+                    chunks = chunk_segments(video, segments, playlist_id=playlist_id)
                     if chunks:
                         upsert_chunks(chunks)
                         indexed += len(chunks)
@@ -270,6 +273,8 @@ def reindex(
     console.print(f"Rebuilding index from [bold]{len(video_ids)}[/bold] transcripts in {source}.")
     console.print(f"Embedding model: [cyan]{config.EMBED_MODEL}[/cyan]\n")
 
+    from ytrag.transcribe import find_transcript, playlist_id_for
+
     total = 0
     with _progress() as progress:
         task = progress.add_task("Reindexing", total=len(video_ids))
@@ -290,7 +295,10 @@ def reindex(
             if replace:
                 delete_video(video_id)
 
-            chunks = chunk_segments(video, segments_from_transcript(data))
+            playlist_id = playlist_id_for(find_transcript(video_id, source), source)
+            chunks = chunk_segments(
+                video, segments_from_transcript(data), playlist_id=playlist_id
+            )
             if chunks:
                 upsert_chunks(chunks)
                 total += len(chunks)
@@ -307,9 +315,11 @@ def ask(
     question: str = typer.Argument(..., help="Your question, in English or Hinglish."),
     top_k: int = typer.Option(config.TOP_K, "--top-k", "-k"),
     video: str = typer.Option("", "--video", help="Restrict to one video ID."),
+    playlist: str = typer.Option("", "--playlist-id", help="Restrict to one playlist folder."),
 ):
     """Ask a question and get a grounded answer with clickable timestamps."""
-    result = answer_question(question, top_k=top_k, video_id=video or None)
+    result = answer_question(question, top_k=top_k, video_id=video or None,
+                             playlist_id=playlist or None)
 
     style = "green" if result["grounded"] else "yellow"
     console.print(Panel(result["answer"], title="Answer", border_style=style))
@@ -341,9 +351,13 @@ def ask(
 def search(
     question: str = typer.Argument(...),
     top_k: int = typer.Option(config.TOP_K, "--top-k", "-k"),
+    playlist: str = typer.Option("", "--playlist-id", help="Restrict to one playlist folder."),
 ):
     """Retrieval only — see exactly what comes back, and at what distance."""
-    hits = retrieve_only(question, top_k=top_k)
+    from ytrag.index import search as _search
+
+    hits = _search(question, top_k=top_k, max_distance=2.0,
+                   playlist_id=playlist or None)
     if not hits:
         console.print("[yellow]Nothing retrieved. Is the collection populated?[/yellow]")
         return
@@ -725,7 +739,7 @@ def _bundled_transcripts() -> Path | None:
     playlist ships in about 6 MB of JSON.
     """
     folder = Path(__file__).resolve().parent.parent / "transcripts"
-    if folder.is_dir() and any(folder.glob("*.json")):
+    if folder.is_dir() and any(folder.rglob("*.json")):
         return folder
     return None
 
