@@ -23,7 +23,14 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState(null);
   const [results, setResults] = useState([]);
+  const [open, setOpen] = useState({});
   const [error, setError] = useState("");
+
+  function toggle(key, e) {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
 
   async function run(mode) {
     const q = question.trim();
@@ -110,19 +117,45 @@ export default function App() {
                 <div className="vmeta">
                   {g.items.length} moment{g.items.length > 1 ? "s" : ""} in this video
                 </div>
-                {g.items.map((r, i) => (
-                  <a
-                    key={i}
-                    className="trow"
-                    href={r.url}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <span className="pill">{r.timestamp}</span>
-                    {r.preview && <span className="tpreview">{r.preview}</span>}
-                    <span className="watch">▶</span>
-                  </a>
-                ))}
+                {g.items.map((r, i) => {
+                  const key = `${r.video_id}:${r.start_sec}`;
+                  const isOpen = !!open[key];
+                  const long = (r.preview || "").length > 140;
+                  return (
+                    <div key={i} className="trow">
+                      <a
+                        className="pill"
+                        href={r.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        title="Jump to this second"
+                      >
+                        {r.timestamp}
+                      </a>
+                      {r.preview && (
+                        <span className={`tpreview${isOpen ? " open" : ""}`}>
+                          {r.preview}
+                        </span>
+                      )}
+                      {long && (
+                        <button
+                          className="morebtn"
+                          onClick={(e) => toggle(key, e)}
+                        >
+                          {isOpen ? "less" : "more"}
+                        </button>
+                      )}
+                      <a
+                        className="watch"
+                        href={r.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        ▶
+                      </a>
+                    </div>
+                  );
+                })}
               </div>
             ))}
           </div>
