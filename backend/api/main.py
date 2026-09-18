@@ -4,6 +4,7 @@ Phase 4 asks for a rate limit and a question-length cap before this goes
 public — both are here, because "add it later" never happens.
 """
 
+import os
 import time
 from collections import defaultdict, deque
 from contextlib import asynccontextmanager
@@ -11,6 +12,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
 from groq import APIStatusError, RateLimitError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -40,6 +42,18 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="YT Lecture RAG", version="0.1.0", lifespan=lifespan)
+
+# Lets a separately-deployed frontend (e.g. Vercel) call this API from the
+# browser. No cookies/auth involved, so a wildcard is fine by default; set
+# YTRAG_CORS_ORIGINS to a comma-separated list to lock it down.
+_cors = os.getenv("YTRAG_CORS_ORIGINS", "*").strip()
+_origins = ["*"] if _cors == "*" else [o.strip() for o in _cors.split(",") if o.strip()]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_origins,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class AskRequest(BaseModel):
