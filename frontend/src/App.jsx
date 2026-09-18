@@ -79,21 +79,55 @@ export default function App() {
         </div>
       )}
 
-      {results.length > 0 && (
-        <div className="card">
-          <h2>Sources</h2>
-          <ul>
-            {results.map((r, i) => (
-              <li key={i}>
-                <a href={r.url} target="_blank" rel="noreferrer">
-                  [{i + 1}] {r.title} @ {r.timestamp}
-                </a>
-                {r.preview && <p className="preview">{r.preview}</p>}
-              </li>
+      {results.length > 0 && (() => {
+        const groups = [];
+        const byId = new Map();
+        results.forEach((r) => {
+          const key = r.video_id || r.title;
+          if (!byId.has(key)) {
+            const g = { title: r.title, items: [] };
+            byId.set(key, g);
+            groups.push(g);
+          }
+          byId.get(key).items.push(r);
+        });
+        groups.forEach((g) =>
+          g.items.sort((a, b) => (a.start_sec ?? 0) - (b.start_sec ?? 0))
+        );
+        const moments = groups.reduce((n, g) => n + g.items.length, 0);
+        return (
+          <div className="sources">
+            <div className="sources-head">
+              <h2>Where this was explained</h2>
+              <span className="count">
+                {moments} moment{moments > 1 ? "s" : ""} · {groups.length} video
+                {groups.length > 1 ? "s" : ""}
+              </span>
+            </div>
+            {groups.map((g, gi) => (
+              <div key={gi} className="vgroup">
+                <div className="vtitle">{g.title}</div>
+                <div className="vmeta">
+                  {g.items.length} moment{g.items.length > 1 ? "s" : ""} in this video
+                </div>
+                {g.items.map((r, i) => (
+                  <a
+                    key={i}
+                    className="trow"
+                    href={r.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span className="pill">{r.timestamp}</span>
+                    {r.preview && <span className="tpreview">{r.preview}</span>}
+                    <span className="watch">▶</span>
+                  </a>
+                ))}
+              </div>
             ))}
-          </ul>
-        </div>
-      )}
+          </div>
+        );
+      })()}
     </div>
   );
 }
