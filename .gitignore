@@ -31,3 +31,6 @@ audio/
 node_modules/
 dist/
 frontend/dist/
+
+# CLI agent workspace
+.agents/
