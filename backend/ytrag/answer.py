@@ -45,8 +45,12 @@ Rules:
 _CITATION_RE = re.compile(r"\[(\d+)\]")
 
 
-def get_client() -> Groq:
+def get_client(api_key: str | None = None) -> Groq:
     global _CLIENT
+    # Per-request key: build a throwaway client so two users with different
+    # keys never share state. Never assign it to the global cache.
+    if api_key:
+        return Groq(api_key=api_key)
     if _CLIENT is None:
         if not GROQ_API_KEY:
             raise RuntimeError("GROQ_API_KEY is not set. Add it to the repo-root .env.")
@@ -54,26 +58,32 @@ def get_client() -> Groq:
     return _CLIENT
 
 
-def _chat(system: str, user: str) -> str:
+def _chat(system: str, user: str, api_key: str | None = None,
+         llm_backend: str | None = None, llm_model: str | None = None) -> str:
     """One completion, from whichever backend is configured.
 
     Kept deliberately small: the explanation is a garnish on top of retrieval,
     so swapping providers should never be more than this function.
+    `api_key` / `llm_backend` / `llm_model` are per-request overrides (BYO
+    key): when supplied they win over the server env, letting two users on
+    the same backend use different providers/keys/models concurrently with
+    no shared state.
     """
-    backend = LLM_BACKEND.lower()
+    backend = (llm_backend or LLM_BACKEND).lower()
 
     if backend == "none":
         raise RuntimeError("Explanations are disabled (YTRAG_LLM_BACKEND=none).")
 
     if backend == "gemini":
-        if not GEMINI_API_KEY:
+        key = api_key or GEMINI_API_KEY
+        if not key:
             raise RuntimeError("GEMINI_API_KEY is not set.")
         from google import genai
         from google.genai import types
 
-        client = genai.Client(api_key=GEMINI_API_KEY)
+        client = genai.Client(api_key=key)
         response = client.models.generate_content(
-            model=LLM_MODEL or GEMINI_MODEL,
+            model=llm_model or LLM_MODEL or GEMINI_MODEL,
             contents=user,
             config=types.GenerateContentConfig(
                 system_instruction=system, temperature=0.2
@@ -81,8 +91,8 @@ def _chat(system: str, user: str) -> str:
         )
         return (response.text or "").strip()
 
-    response = get_client().chat.completions.create(
-        model=LLM_MODEL or GROQ_MODEL,
+    response = get_client(api_key=api_key).chat.completions.create(
+        model=llm_model or LLM_MODEL or GROQ_MODEL,
         messages=[{"role": "system", "content": system},
                   {"role": "user", "content": user}],
         temperature=0.2,
@@ -138,6 +148,9 @@ def answer(
     video_id: str | None = None,
     max_distance: float | None = None,
     playlist_id: str | None = None,
+    api_key: str | None = None,
+    llm_backend: str | None = None,
+    llm_model: str | None = None,
 ) -> dict:
     """-> {"answer", "citations", "grounded", "retrieved"}"""
     question = question.strip()
@@ -155,7 +168,8 @@ def answer(
     chunks = [chunk for chunk, _ in hits]
     user_prompt = f"EXCERPTS\n{build_context(chunks)}\n\nQUESTION: {question}"
 
-    text = _chat(SYSTEM_PROMPT, user_prompt)
+    text = _chat(SYSTEM_PROMPT, user_prompt, api_key=api_key,
+               llm_backend=llm_backend, llm_model=llm_model)
 
     # Guard two: the model read the excerpts and said they don't cover it.
     if REFUSAL.lower() in text.lower():

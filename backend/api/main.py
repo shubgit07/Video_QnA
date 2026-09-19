@@ -59,7 +59,29 @@ app.add_middleware(
 class AskRequest(BaseModel):
     question: str = Field(..., min_length=1, max_length=config.MAX_QUESTION_CHARS)
     top_k: int = Field(default=config.TOP_K, ge=1, le=20)
-    playlist: str = Field(default="", help="Playlist folder id; empty = all playlists.")
+    playlist: str = Field(default="", help="Playlist folder id; exactly one required.")
+    # BYO key: per-request overrides so two users can use different
+    # providers/keys concurrently with no server-side key storage.
+    # Only used by /ask; /search ignores them. Never logged.
+    llm_api_key: str = Field(default="", max_length=500)
+    llm_backend: str = Field(default="", help="'groq', 'gemini', or '' for server default.")
+    llm_model: str = Field(default="", max_length=100, help="Model id; must belong to the backend.")
+
+
+# Model allowlist, kept in sync with the frontend MODELS map in App.jsx.
+# Verified Sept 2026 (console.groq.com/docs/deprecations,
+# ai.google.dev/gemini-api/docs/deprecations): Groq retired the Llama 3.x,
+# Qwen3-32b and Kimi entries; Google shut down gemini-2.0-flash(-lite).
+_ALLOWED_MODELS = {
+    "groq": {
+        "openai/gpt-oss-120b",
+        "openai/gpt-oss-20b",
+    },
+    "gemini": {
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
+    },
+}
 
 
 # A dict of deques is enough for one process on a free tier. Behind more than
@@ -102,7 +124,10 @@ def search(payload: AskRequest, request: Request):
 
     Rate limiting is deliberately not applied here — this costs nothing beyond
     one embedding and one vector query, so there is no reason to ration it.
+    Exactly one playlist must be chosen (no unfiltered "all" search).
     """
+    if not payload.playlist:
+        raise HTTPException(status_code=400, detail="Choose a playlist / video first.")
     return search_only(payload.question, top_k=payload.top_k,
                        playlist_id=payload.playlist or None)
 
@@ -110,9 +135,26 @@ def search(payload: AskRequest, request: Request):
 @app.post("/ask")
 def ask(payload: AskRequest, request: Request):
     _rate_limit(request)
+    if not payload.playlist:
+        raise HTTPException(status_code=400, detail="Choose a playlist / video first.")
+    backend = payload.llm_backend.strip().lower() if payload.llm_backend else ""
+    if backend and backend not in ("groq", "gemini"):
+        raise HTTPException(status_code=400, detail="llm_backend must be 'groq' or 'gemini'.")
+    model = payload.llm_model.strip() if payload.llm_model else ""
+    if model:
+        effective = backend or config.LLM_BACKEND.lower()
+        allowed = _ALLOWED_MODELS.get(effective, set())
+        if model not in allowed:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Model '{model}' is not offered for '{effective}'.",
+            )
     try:
         return answer_question(payload.question, top_k=payload.top_k,
-                               playlist_id=payload.playlist or None)
+                               playlist_id=payload.playlist or None,
+                               api_key=payload.llm_api_key.strip() or None,
+                               llm_backend=backend or None,
+                               llm_model=model or None)
     except RateLimitError as exc:
         # The LLM provider's own quota, not ours. Surfacing this as a 500 tells
         # the student nothing; they need to know it is temporary and whose
@@ -123,9 +165,19 @@ def ask(payload: AskRequest, request: Request):
             "This is a provider limit, not a problem with your question — try again later.",
         )
     except APIStatusError as exc:
+        # 401/403 from the provider almost always means the per-request
+        # (BYO) key is wrong — report it as such without echoing the key.
+        if exc.status_code in (401, 403):
+            raise HTTPException(status_code=401, detail="Invalid API key for this provider.")
         raise HTTPException(status_code=502, detail=f"Language model error: {exc.status_code}")
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail=str(exc))
+    except Exception as exc:
+        # Gemini client surfaces bad keys as a generic API error, not
+        # APIStatusError — map key problems to 401 without echoing the key.
+        if "api key" in str(exc).lower() or "API_KEY_INVALID" in str(exc):
+            raise HTTPException(status_code=401, detail="Invalid API key for this provider.")
+        raise
 
 
 @app.get("/meta")
