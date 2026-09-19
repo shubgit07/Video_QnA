@@ -15,7 +15,6 @@ import {
   ExternalLink,
   SlidersHorizontal,
   Film,
-  Bot,
   AlertCircle,
 } from "lucide-react";
 
@@ -155,7 +154,7 @@ export default function App() {
       return;
     }
     if (mode === "ask" && !apiKey.trim()) {
-      setError("Paste your API key to use Ask AI — Search is free and needs no key.");
+      setError("Add an API key in AI settings to use Ask AI.");
       return;
     }
     setLoading(true);
@@ -204,10 +203,7 @@ export default function App() {
             <div className="brand-icon">
               <PlaySquare size={17} />
             </div>
-            <div className="brand-title">
-              Video Q&amp;A
-              <span className="brand-badge">Video RAG</span>
-            </div>
+            <div className="brand-title">Video Q&amp;A</div>
           </div>
 
           <div className="nav-center">
@@ -219,44 +215,10 @@ export default function App() {
             </span>
           </div>
 
-          <div className="nav-actions">
-            <span className="nav-tag-pill">
-              <Sparkles size={12} />
-              <span>Grounded AI</span>
-            </span>
-          </div>
         </div>
       </nav>
 
       <div className="page">
-        {/* ---- Hero Section: Immediate Value Clarity ---- */}
-        <section className="hero">
-          <div className="hero-tag">
-            <PlaySquare size={13} />
-            <span>Second-Accurate Video Pinpointer</span>
-          </div>
-          <h1>Search &amp; Ask Across Video Lectures</h1>
-          <p>
-            Pinpoint the exact second any concept was explained. Ask in English
-            or Hinglish to get AI-grounded explanations with direct YouTube
-            timestamp links.
-          </p>
-          <div className="feature-chips">
-            <span className="feature-chip">
-              <Play size={12} />
-              <span>Exact Second Jump Links</span>
-            </span>
-            <span className="feature-chip">
-              <Search size={12} />
-              <span>Instant Search (Free)</span>
-            </span>
-            <span className="feature-chip">
-              <Sparkles size={12} />
-              <span>Zero-Hallucination Grounding</span>
-            </span>
-          </div>
-        </section>
-
         {/* ---- Single-Select Playlist Picker ---- */}
         <div className="picker-block">
           <button
@@ -312,7 +274,7 @@ export default function App() {
           <div className="key-top">
             <span className="key-title">
               <SlidersHorizontal size={14} />
-              AI Engine Setup <em>(only for Ask AI — Search is free)</em>
+              AI settings
             </span>
             <div
               className="provider-toggle"
@@ -366,9 +328,7 @@ export default function App() {
                 value={draftKey}
                 onChange={(e) => setDraftKey(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && applyKey()}
-                placeholder={`Paste your ${
-                  provider === "groq" ? "Groq" : "Gemini"
-                } API key, then click Apply`}
+                placeholder={`${provider === "groq" ? "Groq" : "Gemini"} API key`}
                 autoComplete="off"
                 spellCheck={false}
               />
@@ -377,14 +337,12 @@ export default function App() {
                 onClick={applyKey}
                 disabled={!draftKey.trim()}
               >
-                <KeyRound size={13} />
                 <span>Apply</span>
               </button>
             </div>
           )}
           <p className="key-hint">
-            Applied key is stored only in your browser (localStorage) and never
-            saved on the server. Free keys: console.groq.com / aistudio.google.com
+            Needed only for Ask AI. Stored locally in this browser.
           </p>
         </div>
 
@@ -428,13 +386,12 @@ export default function App() {
           </div>
         )}
 
-        {/* ---- Grounded AI Answer Card ---- */}
+        {/* ---- Answer ---- */}
         {answer && (
           <div className="answer-card">
             <div className="answer-header">
               <div className="answer-tag">
-                <Bot size={17} />
-                <span>Grounded Answer</span>
+                <span>Answer</span>
               </div>
               <button
                 className="copy-btn"
@@ -472,7 +429,7 @@ export default function App() {
                 <div className="sources-head">
                   <h2 className="sources-title">
                     <Film size={15} />
-                    <span>Where this was explained</span>
+                    <span>Sources</span>
                   </h2>
                   <span className="sources-count-badge">
                     {moments} moment{moments > 1 ? "s" : ""} · {groups.length}{" "}
