@@ -21,7 +21,13 @@ COPY backend/eval ./eval
 COPY SETUP.md ./
 RUN uv sync --frozen
 
+ENV HF_HOME=/opt/hf
+RUN .venv/bin/python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+
+ENV HF_HUB_OFFLINE=1 \
+    TRANSFORMERS_OFFLINE=1
+
 EXPOSE 8000
 
 # Load prebuilt vectors into ephemeral local Qdrant, then serve (single worker).
-CMD ["sh", "-c", "uv run ytrag load && exec uv run ytrag serve --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", ".venv/bin/ytrag load && exec .venv/bin/ytrag serve --host 0.0.0.0 --port ${PORT:-8000}"]
