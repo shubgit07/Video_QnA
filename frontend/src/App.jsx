@@ -298,13 +298,44 @@ export default function App() {
   const [answer, setAnswer] = useState(null);
   const [results, setResults] = useState([]);
   const [open, setOpen] = useState({});
-  const [playlists, setPlaylists] = useState({});
-  const [playlist, setPlaylist] = useState("");
+  const [playlists, setPlaylists] = useState(() => {
+    try {
+      const saved = localStorage.getItem("ytrag_playlists");
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+  const [playlist, setPlaylist] = useState(() => {
+    try {
+      const saved = localStorage.getItem("ytrag_playlists");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        const ids = Object.keys(parsed);
+        return ids[0] || "";
+      }
+    } catch {}
+    return "";
+  });
   const [pickerOpen, setPickerOpen] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
-  const [meta, setMeta] = useState({ lectures: 0, hours: 0 });
-  const [serverState, setServerState] = useState("checking"); // "checking" | "waking" | "ready" | "error"
+  const [meta, setMeta] = useState(() => {
+    try {
+      const saved = localStorage.getItem("ytrag_meta");
+      return saved ? JSON.parse(saved) : { lectures: 0, hours: 0 };
+    } catch {
+      return { lectures: 0, hours: 0 };
+    }
+  });
+  const [serverState, setServerState] = useState(() => {
+    try {
+      const saved = localStorage.getItem("ytrag_playlists");
+      return saved && Object.keys(JSON.parse(saved)).length > 0 ? "ready" : "checking";
+    } catch {
+      return "checking";
+    }
+  }); // "checking" | "waking" | "ready" | "error"
   const [retryAttempt, setRetryAttempt] = useState(0);
   const [view, setView] = useState(() => (window.location.hash === "#app" ? "app" : "landing"));
 
@@ -366,22 +397,32 @@ export default function App() {
         if (cancelled) return;
 
         if (m) {
-          setMeta({ lectures: m.lectures || 0, hours: m.hours || 0 });
+          const newMeta = { lectures: m.lectures || 0, hours: m.hours || 0 };
+          setMeta(newMeta);
+          try {
+            localStorage.setItem("ytrag_meta", JSON.stringify(newMeta));
+          } catch {}
+
           if (m.playlists) {
             setPlaylists(m.playlists);
+            try {
+              localStorage.setItem("ytrag_playlists", JSON.stringify(m.playlists));
+            } catch {}
             const ids = Object.keys(m.playlists);
             if (ids.length > 0) setPlaylist((prev) => prev || ids[0]);
           }
           setServerState("ready");
+          setRetryAttempt(0);
         }
       } catch (e) {
         if (cancelled) return;
         count++;
         setRetryAttempt(count);
+        // Only show "waking" when a request actually fails
+        setServerState("waking");
         if (count >= MAX_RETRIES) {
           setServerState("error");
         } else {
-          setServerState("waking");
           timer = setTimeout(loadMeta, 3000);
         }
       }
@@ -601,19 +642,19 @@ export default function App() {
           <button
             className="picker-toggle"
             onClick={() => setPickerOpen((v) => !v)}
-            disabled={serverState !== "ready" || playlistIds.length === 0}
+            disabled={playlistIds.length === 0}
           >
             <span className="picker-label-chip">
               <FolderGit2 size={13} />
               <span>Playlist</span>
             </span>
             <span className="picker-current">
-              {serverState === "waking" || serverState === "checking" ? (
+              {serverState === "waking" && playlistIds.length === 0 ? (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "#f59e0b" }}>
                   <Loader2 size={13} className="spin" />
                   Waking up server... please wait
                 </span>
-              ) : serverState === "error" ? (
+              ) : serverState === "error" && playlistIds.length === 0 ? (
                 <span style={{ color: "#ef4444" }}>
                   Backend offline — check connection
                 </span>
