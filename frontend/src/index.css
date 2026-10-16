@@ -96,6 +96,25 @@ button, input, select { font: inherit; }
 .nav-center { gap: 7px; color: var(--text-muted); font-size: 12px; }
 
 .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
+.pulse-dot.pulse-dot-amber {
+  background: #f59e0b;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+  animation: pulse-glow 1.5s infinite ease-in-out;
+}
+.pulse-dot.pulse-dot-red {
+  background: #ef4444;
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.15); }
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 .page {
   width: min(100% - 40px, 1120px);

@@ -16,6 +16,8 @@ import {
   SlidersHorizontal,
   Film,
   AlertCircle,
+  Loader2,
+  RefreshCw,
 } from "lucide-react";
 
 // Backend base URL. On Vercel set VITE_BACKEND_URL to the Render/Azure service URL.
@@ -49,6 +51,8 @@ export default function App() {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
   const [meta, setMeta] = useState({ lectures: 0, hours: 0 });
+  const [serverState, setServerState] = useState("checking"); // "checking" | "waking" | "ready" | "error"
+  const [retryAttempt, setRetryAttempt] = useState(0);
 
   // --- BYO API key (Ask AI only; Search needs no key) ---
   const MODELS = {
@@ -78,9 +82,18 @@ export default function App() {
   const playlistIds = Object.keys(playlists);
 
   useEffect(() => {
-    fetch(`${API}/meta`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((m) => {
+    let cancelled = false;
+    let timer = null;
+    let count = 0;
+    const MAX_RETRIES = 30; // 30 retries * 3s = 90s for Azure cold start
+
+    async function loadMeta() {
+      try {
+        const res = await fetch(`${API}/meta`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const m = await res.json();
+        if (cancelled) return;
+
         if (m) {
           setMeta({ lectures: m.lectures || 0, hours: m.hours || 0 });
           if (m.playlists) {
@@ -88,9 +101,27 @@ export default function App() {
             const ids = Object.keys(m.playlists);
             if (ids.length > 0) setPlaylist((prev) => prev || ids[0]);
           }
+          setServerState("ready");
         }
-      })
-      .catch(() => {});
+      } catch (e) {
+        if (cancelled) return;
+        count++;
+        setRetryAttempt(count);
+        if (count >= MAX_RETRIES) {
+          setServerState("error");
+        } else {
+          setServerState("waking");
+          timer = setTimeout(loadMeta, 3000);
+        }
+      }
+    }
+
+    loadMeta();
+
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => {
@@ -207,12 +238,30 @@ export default function App() {
           </div>
 
           <div className="nav-center">
-            <span className="pulse-dot"></span>
-            <span>
-              {meta.lectures > 0
-                ? `${meta.lectures} Lectures · ${meta.hours}h Indexed`
-                : "68.7h Lectures Indexed"}
-            </span>
+            {serverState === "ready" ? (
+              <>
+                <span className="pulse-dot"></span>
+                <span>
+                  {meta.lectures > 0
+                    ? `${meta.lectures} Lectures · ${meta.hours}h Indexed`
+                    : "Server Online · Playlists Ready"}
+                </span>
+              </>
+            ) : serverState === "waking" || serverState === "checking" ? (
+              <>
+                <Loader2 size={13} className="spin" style={{ color: "#f59e0b" }} />
+                <span style={{ color: "#f59e0b" }}>
+                  Waking up server (cold start{retryAttempt > 0 ? ` · retry #${retryAttempt}` : ""}...)...
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="pulse-dot pulse-dot-red"></span>
+                <span style={{ color: "#ef4444" }}>
+                  Backend unreachable
+                </span>
+              </>
+            )}
           </div>
 
         </div>
@@ -224,18 +273,29 @@ export default function App() {
           <button
             className="picker-toggle"
             onClick={() => setPickerOpen((v) => !v)}
-            disabled={playlistIds.length === 0}
+            disabled={serverState !== "ready" || playlistIds.length === 0}
           >
             <span className="picker-label-chip">
               <FolderGit2 size={13} />
               <span>Playlist</span>
             </span>
             <span className="picker-current">
-              {selected
-                ? `${playlist} (${selected.chunks} moments)`
-                : playlistIds.length === 0
-                ? "No playlists indexed yet"
-                : "Select one"}
+              {serverState === "waking" || serverState === "checking" ? (
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "#f59e0b" }}>
+                  <Loader2 size={13} className="spin" />
+                  Waking up server... please wait
+                </span>
+              ) : serverState === "error" ? (
+                <span style={{ color: "#ef4444" }}>
+                  Backend offline — check connection
+                </span>
+              ) : selected ? (
+                `${playlist} (${selected.chunks} moments)`
+              ) : playlistIds.length === 0 ? (
+                "No playlists indexed yet"
+              ) : (
+                "Select one"
+              )}
             </span>
             <span className="picker-chevron">
               {pickerOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
