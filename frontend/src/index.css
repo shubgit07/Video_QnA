@@ -26,7 +26,7 @@
   --bg: #080c15;
   --surface: #0f172a;
   --surface-soft: #172235;
-  --border: rgba(148, 163, 184, 0.18);
+  --border: rgba(148, 163, 184, 0.12);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-faint: #64748b;
@@ -36,9 +36,9 @@
   --danger: #f87171;
   --danger-dim: rgba(239, 68, 68, 0.12);
   --success: #34d399;
-  --radius: 12px;
-  --radius-sm: 8px;
-  --shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  --radius: 6px;
+  --radius-sm: 4px;
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 * { box-sizing: border-box; }
@@ -86,7 +86,7 @@ button, input, select { font: inherit; }
   width: 28px;
   height: 28px;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 5px;
   color: #fff;
   background: var(--primary);
 }
@@ -240,7 +240,7 @@ button, input, select { font: inherit; }
   font-weight: 500;
   cursor: pointer;
   border: 0;
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
 }
 
@@ -264,7 +264,7 @@ button, input, select { font: inherit; }
 
 .model-row select:focus, .key-row input:focus, .query-input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-dim);
+  box-shadow: 0 0 0 2px var(--primary-dim);
 }
 
 .key-row { display: grid; gap: 8px; }
@@ -332,7 +332,7 @@ button, input, select { font: inherit; }
   padding: 11px 13px;
   margin-bottom: 14px;
   color: var(--danger);
-  border: 1px solid rgba(248, 113, 113, 0.5);
+  border: 1px solid rgba(248, 113, 113, 0.3);
   border-radius: var(--radius-sm);
   background: var(--danger-dim);
   font-size: 13px;
@@ -352,7 +352,7 @@ button, input, select { font: inherit; }
   color: var(--text-muted);
   cursor: pointer;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 4px;
   background: transparent;
   font-size: 12px;
 }
@@ -383,7 +383,7 @@ button, input, select { font: inherit; }
   flex: none;
   padding: 4px 8px;
   color: #fff;
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--primary);
   font-size: 12px;
   font-weight: 700;
@@ -405,7 +405,7 @@ button, input, select { font: inherit; }
 }
 
 .tpreview.open { display: block; overflow: visible; }
-.morebtn { flex: none; padding: 2px 4px; color: var(--primary); cursor: pointer; border: 0; border-radius: 4px; background: transparent; font-size: 12px; font-weight: 500; }
+.morebtn { flex: none; padding: 2px 4px; color: var(--primary); cursor: pointer; border: 0; border-radius: 3px; background: transparent; font-size: 12px; font-weight: 500; }
 .watch-link { flex: none; padding: 4px; color: var(--text-muted); }
 .watch-link:hover { color: var(--primary); }
 
