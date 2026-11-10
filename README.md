@@ -40,7 +40,7 @@ flowchart LR
 
 ---
 
-## ⚙️ System Architecture (For Tech & Engineering Minds)
+## ⚙️ System Architecture
 
 ```mermaid
 flowchart TD
